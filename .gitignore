@@ -1,0 +1,7 @@
+
+# Packages
+node_modules
+**/___build/
+
+# Environment
+.env
