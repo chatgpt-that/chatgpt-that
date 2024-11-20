@@ -4,7 +4,8 @@
   "version": "0.0.2",
   "main": "index.js",
   "scripts": {
-    "build:backend": "npx tsc -p packages/web-app-backend/tsconfig.json"
+    "build:web-app": "webpack --mode production --config packages/web-app/webpack.config.cjs",
+    "build:web-app-backend": "npx tsc -p packages/web-app-backend/tsconfig.json"
   },
   "keywords": [],
   "author": "",
@@ -12,11 +13,18 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.1",
-    "typescript": "^5.6.3"
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
   }
 }
