@@ -6,7 +6,7 @@ module.exports = {
   mode: prod ? 'production' : 'development',
   entry: path.resolve(__dirname, 'index.tsx'),
   output: {
-    path: path.resolve(__dirname, '___build'),
+    path: path.resolve(__dirname, 'public', '___build'),
     filename: 'web-app-bundle.cjs',
   },
   module: {
