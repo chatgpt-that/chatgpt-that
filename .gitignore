@@ -1,7 +1,9 @@
 
 # Packages
-node_modules
-**/___build/
+**/node_modules/
+packages/**/build/
+packages/**/___build/
+packages/**/___release/
 
 # Environment
 .env

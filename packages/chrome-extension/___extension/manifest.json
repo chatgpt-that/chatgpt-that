@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT That",
+  "version": "0.0.2",
+  "description": "A simple Chrome extension to let ChatGPT see what you're seeing so it can answer your questions better.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "build/variables/variables.js",
+        "build/content-script/content-script.js"
+      ]
+    }
+  ]
+}

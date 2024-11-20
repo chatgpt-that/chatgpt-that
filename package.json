@@ -4,10 +4,13 @@
   "version": "0.0.2",
   "main": "index.js",
   "scripts": {
+    "copy-chrome-extension-node-modules": "cp -r packages/chrome-extension/node_modules packages/chrome-extension/___extension/node_modules",
     "build:web-app": "webpack --mode production --config packages/web-app/webpack.config.cjs",
-    "build:web-app-backend": "npx tsc -p packages/web-app-backend/tsconfig.json",
     "build:web-app-w": "webpack --mode production --config packages/web-app/webpack.config.cjs -w",
+    "build:web-app-backend": "npx tsc -p packages/web-app-backend/tsconfig.json",
     "build:web-app-backend-w": "npx tsc -p packages/web-app-backend/tsconfig.json --watch",
+    "build:chrome-extension": "npm run copy-chrome-extension-node-modules && npx tsc -p packages/chrome-extension/tsconfig.json",
+    "build:chrome-extension-w": "npm run copy-chrome-extension-node-modules && npx tsc -p packages/chrome-extension/tsconfig.json --watch",
     "start": "concurrently \"npm run build:web-app-w\" \"npm run build:web-app-backend-w\" \"npx nodemon packages/web-app-backend/___build/index.js\"",
     "start:prod": "npm run build:web-app && npm run build:web-app-backend && node packages/web-app-backend/___build/index.js"
   },
