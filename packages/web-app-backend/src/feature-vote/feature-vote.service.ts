@@ -1,12 +1,18 @@
 import { FeatureVoteRepository } from './feature-vote.repository.js';
-import { CreateFeatureVoteDTO } from './featute-vote.dto.js';
+import { CreateFeatureVoteDTO, GetFeatureVoteDTO } from './featute-vote.dto.js';
 
 export class FeatureVoteService {
   featureVoteRepository: FeatureVoteRepository;
 
   constructor() {
+    this.getFeatureVote=this.getFeatureVote.bind(this);
     this.createFeatureVote=this.createFeatureVote.bind(this);
     this.featureVoteRepository = new FeatureVoteRepository();
+  }
+
+  async getFeatureVote(getFeatureVoteDto: GetFeatureVoteDTO) {
+    const featureVote = await this.featureVoteRepository.findOneByEmail({ email: getFeatureVoteDto.email });
+    return featureVote?.vote ?? -1;
   }
 
   async createFeatureVote(createFeatureVoteDto: CreateFeatureVoteDTO) {

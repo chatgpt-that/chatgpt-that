@@ -1,7 +1,7 @@
 
 export interface CreateFeatureVoteDTO {
   email: string;
-  vote: 1 | 2 | 3;
+  vote: 0 | 1 | 2;
 }
 
 export interface FindOneByEmailDTO {
@@ -11,4 +11,8 @@ export interface FindOneByEmailDTO {
 export interface UpdateOneByEmailDTO {
   email: string;
   updates: {[key: string]: unknown}
+}
+
+export interface GetFeatureVoteDTO {
+  email: string;
 }

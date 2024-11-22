@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export interface IFeatureVote {
   email: string;
-  vote: 1 | 2 | 3;
+  vote: 0 | 1 | 2;
   created_at: string;
 }
 

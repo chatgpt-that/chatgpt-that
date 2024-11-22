@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { FeatureVoteController } from './src/feature-vote/feature-vote.controller.js';
 
 dotenv.config();
 
@@ -26,6 +27,9 @@ app.use(express.static(publicFolder));
 app.get('/', (req, res) => {
   res.sendFile(clientHtml);
 });
+
+// Controllers
+new FeatureVoteController(app);
 
 app.get('/api', (req, res) => {
   res.send('[Server]: This endpoint is working as intended.');
