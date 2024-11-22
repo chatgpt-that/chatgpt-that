@@ -31,7 +31,7 @@ export function SplashNav({
           <div 
             key={navItem.label} 
             className='font-[Gilroy] font-[600] text-lg text-[#000000d9] hover:cursor-pointer hover:underline hover:text-[#407BFF]'
-            onClick={() => navItem.onClick()}
+            onClick={navItem.onClick}
           >
             { navItem.label }
           </div>

@@ -4,23 +4,28 @@ import { faqs, featureVoteItems, splashNavTitle } from './splash-data';
 import { FeatureVote } from '../../components/feature-vote/feature-vote';
 import { Feedback } from '../../components/feedback/feedback';
 import { FAQ } from '../../components/faq/faq';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export function SplashPage() {
-  const [user, setUser] = useState(null);
+  const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
   const [selectedVoteFeature, setSelectedVoteFeature] = useState(0);
 
-  const handleLoginByGoogle = () => {
-    window.alert('Feature not yet implemented.');
+  const handleLoginByGoogle = async () => {
+    await loginWithPopup();
+  };
+
+  const handleLogout = async () => {
+    await logout();
   };
 
   const handleSubmitFeedback = (feedback: string) => {
     window.alert('Feature not yet implemented.');
   };
 
-  const splashNavItems: NavItem[] = [
-    { label: 'Login (Google)', onClick: handleLoginByGoogle },
-  ];
-
+  const splashNavItems: NavItem[] = isAuthenticated
+  ? [{label: 'Logout', onClick: handleLogout }]
+  : [{label: 'Login (Google)', onClick: handleLoginByGoogle }];
+  
   return (
     <div className='flex flex-col gap-24 mb-24 items-center'>
       <SplashNav 

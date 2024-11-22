@@ -1,5 +1,5 @@
-import { FAQ } from "../../components/faq/faq";
-import { FeatureItem } from "../../components/feature-vote/feature-vote";
+import { FAQ } from '../../components/faq/faq';
+import { FeatureItem } from '../../components/feature-vote/feature-vote';
 
 export const splashNavTitle = 'CHATGPT THAT';
 
