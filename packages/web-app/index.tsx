@@ -11,8 +11,12 @@ root.render(
     domain='dev-aqery6lj0pr7n2li.us.auth0.com'
     clientId='lzSdg1iTKgUgbyvoRh7ZUJmrYw4lVfyE'
     authorizationParams={{
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin,
+      audience: 'https://dev-aqery6lj0pr7n2li.us.auth0.com/api/v2/',
+      scope: 'openid email',
     }}
+    useRefreshTokens={true}
+    cacheLocation='localstorage'
   >
     <div className='w-[1450px] justify-self-center'>
       <SplashPage />
