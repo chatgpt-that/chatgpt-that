@@ -1,5 +1,6 @@
 import { Express, Request, Response } from 'express';
 import { FeedbackService } from './feedback.service.js';
+import { AuthenticateUserMiddleware } from '../../___middlewares/authenticate-user.js';
 
 export class FeedbackController {
   app: Express;
@@ -10,13 +11,14 @@ export class FeedbackController {
     this.app = app;
     this.feedbackService = new FeedbackService();
     console.log('[Server]: API Availble - POST /api/feedback');
-    app.post('/api/feedback', this.createFeedback as any);
+    app.post('/api/feedback', AuthenticateUserMiddleware as any, this.createFeedback as any);
   }
 
   async createFeedback(req: Request, res: Response) {
     try {
-      const { email, message } = req.body;
-      if (!email) return res.status(400).send('Missing email field');
+      const { message } = req.body;
+      const { email } = (req as any).auth;
+      if (!email) return res.status(401).send('Missing email from auth id_token');
       if (!message) return res.status(400).send('Missing message field');
       await this.feedbackService.createFeedback({ email, message });
       res.send();

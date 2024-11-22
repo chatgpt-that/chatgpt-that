@@ -1,13 +1,18 @@
 import mongoose from 'mongoose';
 import { IFeedback, feedbackModel } from './feedback.schema.js';
-import { CreateFeedbackDTO } from './feedback.dto.js';
+import { CountDocumentDTO, CreateFeedbackDTO } from './feedback.dto.js';
 
 export class FeedbackRepository {
   feedbackModel: mongoose.Model<IFeedback>;
 
   constructor() {
     this.createOne=this.createOne.bind(this);
+    this.countDocuments=this.countDocuments.bind(this);
     this.feedbackModel = feedbackModel;
+  }
+
+  async countDocuments(countDocumentsDto: CountDocumentDTO) {
+    return await this.feedbackModel.countDocuments({ email: countDocumentsDto.email });
   }
 
   async createOne(createFeedbackDto: CreateFeedbackDTO) {

@@ -7,7 +7,7 @@ export interface IFeedback {
 }
 
 const schema = new mongoose.Schema<IFeedback>({
-  email: { type: String, unique: true, required: true, index: true },
+  email: { type: String, required: true, index: true },
   message: { type: String, required: true },
   created_at: { type: String, required: true },
 });

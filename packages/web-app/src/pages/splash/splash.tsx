@@ -6,10 +6,12 @@ import { Feedback } from '../../components/feedback/feedback';
 import { FAQ } from '../../components/faq/faq';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getFeatureVote, upsertFeatureVote } from '../../api/feature-vote.api';
+import { sendFeedback } from '../../api/feedback.api';
 
 export function SplashPage() {
   const { user, isAuthenticated, loginWithPopup, logout, getIdTokenClaims } = useAuth0();
   const [selectedVoteFeature, setSelectedVoteFeature] = useState(-1);
+  const [feedbackValue, setFeedbackValue] = useState(window.localStorage.getItem('cached-feedback') ?? '');
 
   const handleLoginByGoogle = async () => {
     await loginWithPopup();
@@ -19,8 +21,20 @@ export function SplashPage() {
     await logout();
   };
 
-  const handleSubmitFeedback = (feedback: string) => {
-    window.alert('Feature not yet implemented.');
+  const handleSubmitFeedback = async (feedback: string) => {
+    try {
+      window.localStorage.setItem('cached-feedback', feedback);
+      if (!isAuthenticated) return await loginWithPopup();
+      const id_token = (await getIdTokenClaims())?.__raw!;
+      await sendFeedback({
+        id_token,
+        feedbackMessage: feedback,
+      });
+      setFeedbackValue('');
+      window.localStorage.removeItem('cached-feedback');
+    } catch (err) {
+      console.error(`[Client]: Failed to send feedback - ${err}`);
+    }
   };
 
   const handleFeatureVote = async (vote: 0 | 1 | 2) => {
@@ -71,7 +85,7 @@ export function SplashPage() {
       />
       <iframe className='rounded-xl' width="1280" height="720" src="https://www.youtube.com/embed/CsrmS0id6So?si=VHZiivbn3xoC1Q6t" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
       <div className='w-full grid grid-cols-2 gap-[50px]'>
-        <Feedback onSubmit={handleSubmitFeedback} characterLimit={450}/>
+        <Feedback onSubmit={handleSubmitFeedback} characterLimit={450} value={feedbackValue} onChange={setFeedbackValue}/>
         <FAQ faqs={faqs}/>
       </div>
     </div>

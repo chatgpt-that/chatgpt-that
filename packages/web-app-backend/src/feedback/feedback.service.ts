@@ -10,6 +10,8 @@ export class FeedbackService {
   }
 
   async createFeedback(createFeedbackDto: CreateFeedbackDTO) {
+    const feedbackCountFromUser = await this.feedbackRepository.countDocuments({ email: createFeedbackDto.email });
+    if (feedbackCountFromUser > 9) throw Error('Too many unread feedback requests');
     return await this.feedbackRepository.createOne(createFeedbackDto);
   }
 }

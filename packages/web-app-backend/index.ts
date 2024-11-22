@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FeatureVoteController } from './src/feature-vote/feature-vote.controller.js';
+import { FeedbackController } from './src/feedback/feedback.controller.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 
 // Controllers
 new FeatureVoteController(app);
+new FeedbackController(app);
 
 app.get('/api', (req, res) => {
   res.send('[Server]: This endpoint is working as intended.');
