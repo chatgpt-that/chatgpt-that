@@ -1,1 +1,6 @@
 const message = 'Hello world';
+
+const INITIAL_SELECTOR_X = 121;
+const INITIAL_SELECTOR_Y = 121;
+const INITIAL_SELECTOR_RESIZER_X = 313;
+const INITIAL_SELECTOR_RESIZER_Y = 213;
