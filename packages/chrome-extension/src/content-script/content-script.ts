@@ -11,11 +11,16 @@ const STATE_MANAGER = {
   selectorResizerMouseDown: false,
 
   // Authentication
-  // Todo - Set both to false
-  initialLoginAttemptCompleted: true,
-  isAuthenticated: true,
+  initialLoginAttemptCompleted: false,
+  id_token: '',
 
 };
+
+// Initial login attempt 
+getIdToken() 
+.then((id_token) => STATE_MANAGER.id_token = id_token) 
+.catch((err) => console.error(`[Client]: Error fetching id_token - ${err}`)) 
+.finally(() => STATE_MANAGER.initialLoginAttemptCompleted = true); 
 
 //////////////////////////////////////////////////
 // EVENT LISTENERS
@@ -66,7 +71,7 @@ selectorResizerElement.addEventListener('mousedown', (event) => {
 
 selectorElement.addEventListener('dblclick', (event) => {
   if (!STATE_MANAGER.initialLoginAttemptCompleted) return console.error(`[Client]: Attemping to authenticate, please wait`);
-  if (!STATE_MANAGER.isAuthenticated) return console.error('[Client]: PLACEHOLDER CONSOLE.ERORR - Redirect to login.');
+  if (!STATE_MANAGER.id_token) return console.error('[Client]: PLACEHOLDER CONSOLE.ERORR - Redirect to login.');
   toggleSelectorResizerElement();
   toggleSelectionBoxElement();
   toggleShowQueryInput();

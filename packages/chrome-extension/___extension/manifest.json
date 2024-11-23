@@ -17,6 +17,7 @@
         "build/components/query-input.js",
         "build/components/logout-button.js",
         "build/components/query-response.js",
+        "build/integrations/auth.api.js",
 
         "build/content-script/content-script.js"
       ]

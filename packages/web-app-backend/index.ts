@@ -25,16 +25,16 @@ mongoose.connect(databaseUri)
 app.use(express.json({ limit: '5mb' }));
 app.use(express.static(publicFolder));
 
-app.get('/', (req, res) => {
-  res.sendFile(clientHtml);
-});
-
 // Controllers
 new FeatureVoteController(app);
 new FeedbackController(app);
 
 app.get('/api', (req, res) => {
   res.send('[Server]: This endpoint is working as intended.');
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(clientHtml);
 });
 
 app.listen(
