@@ -28,6 +28,25 @@ const getIdToken = (): Promise<string> => {
   });
 };
 
+const login = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const loginIFrameElement = createHiddenIFrame('http://localhost:3000/login-iframe');
+    window.addEventListener('message', (event) => {
+      try {
+        if (event.origin !== 'http://localhost:3000') return;
+        const { intendedForChatGPTThat, error, id_token } = JSON.parse(event.data);
+        if (!intendedForChatGPTThat) return reject('Invalid message');
+        if (error) return reject(error);
+        return resolve(id_token);
+      } catch (err) {
+        return reject(err);
+      } finally {
+        loginIFrameElement.remove();
+      }
+    });
+  });
+};
+
 const logout = (): Promise<void> => {
   return new Promise((resolve, reject) => {
     const logoutIFrameElement = createHiddenIFrame('http://localhost:3000/logout-iframe');
