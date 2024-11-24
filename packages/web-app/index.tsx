@@ -4,6 +4,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { createRoot } from 'react-dom/client';
 import { SplashPage } from './src/pages/splash/splash';
 import { GetIdTokenIFrame } from './src/pages/iframes/get-id-token';
+import { LogoutIFrame } from './src/pages/iframes/logout';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -32,6 +33,7 @@ root.render(
           <Route index element={<Navigate to='splash' replace />} />
           <Route path='splash' element={<SplashLayout><SplashPage /></SplashLayout>}/>
           <Route path='get-id-token-iframe' element={<GetIdTokenIFrame />} />
+          <Route path='logout-iframe' element={<LogoutIFrame />}/>
         </Route>
       </Routes>
     </BrowserRouter>

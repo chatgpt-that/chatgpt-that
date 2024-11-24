@@ -90,3 +90,18 @@ queryResponseCopyIconElement.addEventListener('click', async () => {
   const clipboardText = queryResponseElement.innerText;
   await window.navigator.clipboard.writeText(clipboardText);
 });
+
+// LOGOUT BUTTON
+logoutButtonElement.addEventListener('click', () => {
+  logout()
+  .then(() => {
+    toggleSelectorResizerElement();
+    toggleSelectionBoxElement();
+    toggleShowQueryInput();
+    toggleShowLogoutButton();
+    hideQueryResponse();
+  })
+  .catch((err) => {
+    console.error(`[Client]: Failed to logout - ${err}`);
+  });
+});

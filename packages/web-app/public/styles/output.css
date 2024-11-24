@@ -588,16 +588,8 @@ video {
   }
 }
 
-.absolute {
-  position: absolute;
-}
-
 .relative {
   position: relative;
-}
-
-.top-0 {
-  top: 0px;
 }
 
 .mb-24 {
@@ -653,10 +645,6 @@ video {
   height: 100%;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .min-h-\[48px\] {
   min-height: 48px;
 }
@@ -679,10 +667,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-screen {
-  width: 100vw;
 }
 
 .flex-grow {
@@ -818,11 +802,6 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-\[red\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 0 0 / var(--tw-bg-opacity, 1));
-}
-
 .bg-\[url\(\'\/assets\/icons\/arrow-right-icon\.svg\'\)\] {
   background-image: url('/assets/icons/arrow-right-icon.svg');
 }
@@ -943,16 +922,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-
-.text-red-50 {
-  --tw-text-opacity: 1;
-  color: rgb(254 242 242 / var(--tw-text-opacity, 1));
-}
-
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
 .opacity-50 {
