@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT That",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Enabling ChatGPT to see what you see",
+  "icons": {
+    "16": "assets/chatgpt-that-icon.png",
+    "48": "assets/chatgpt-that-icon.png",
+    "128": "assets/chatgpt-that-icon.png"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
