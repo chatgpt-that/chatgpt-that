@@ -105,6 +105,7 @@ selectorResizerElement.addEventListener('mousedown', (event) => {
 });
 
 selectorElement.addEventListener('dblclick', async (event) => {
+  console.log({id_token: STATE_MANAGER.id_token, user: STATE_MANAGER.user});
   if (!STATE_MANAGER.initialLoginAttemptCompleted) {
     showQueryResponseWithMessage('Attempting to authenticate, please wait', true);
     return;
@@ -120,6 +121,16 @@ selectorElement.addEventListener('dblclick', async (event) => {
       console.error(`[Client]: Error logging in - ${err}`);
       showQueryResponseWithMessage('Unable to log in at this time, please refresh and try again', true);
     });
+  }
+
+  if (!STATE_MANAGER.user) {
+    return showQueryResponseWithMessage('Ran into an issue retrieving user data, please refresh and try again', true);
+  }
+
+  if (STATE_MANAGER.user.credits <= 0) {
+    return createStripeCheckoutUrl(STATE_MANAGER.id_token)
+    .then((stripeCheckoutUrl) => window.location.href = stripeCheckoutUrl)
+    .catch(() => showQueryResponseWithMessage('Error creating stripe payment url', true));
   }
 
   toggleSelectorResizerElement();

@@ -20,6 +20,7 @@
 
         "build/integrations/auth.api.js",
         "build/integrations/user.api.js",
+        "build/integrations/payment.api.js",
 
         "build/content-script/content-script.js"
       ]

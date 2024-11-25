@@ -19,6 +19,7 @@ const getUser = (id_token: string): Promise<IUser> => {
     )
     .then(async (response) => {
       const data = await response.json();
+      if (data.error) return reject(data.error);
       resolve(data);
     })
     .catch(reject);
