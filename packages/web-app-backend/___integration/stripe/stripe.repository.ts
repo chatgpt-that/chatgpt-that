@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { IStripeCheckoutSession, stripeCheckoutSessionModel } from './stripe.schema';
-import { CreateOneDTO, FindOneDTO, RemoveOneDTO } from './stripe.dto';
+import { IStripeCheckoutSession, stripeCheckoutSessionModel } from './stripe.schema.js';
+import { CreateOneDTO, FindOneDTO, RemoveOneDTO } from './stripe.dto.js';
 
 export class StripeRepository {
   stripeCheckoutSessionModel: mongoose.Model<IStripeCheckoutSession>

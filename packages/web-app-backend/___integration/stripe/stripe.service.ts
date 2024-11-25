@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
-import { CreateCheckoutUrlDTO } from './stripe.dto';
-import { StripeRepository } from './stripe.repository';
+import { CreateCheckoutUrlDTO } from './stripe.dto.js';
+import { StripeRepository } from './stripe.repository.js';
 
 dotenv.config();
 
