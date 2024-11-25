@@ -29,3 +29,19 @@ const toggleShowQueryInput = () => {
   queryInputElement.style.bottom = isHidden ? '16px' : '-72px';
   isHidden && queryInputElement.focus();
 };
+
+const setQueryInputIsLoading = () => {
+  (queryInputElement as HTMLInputElement).value = 'Querying...';
+  queryInputElement.classList.add('animate-infinite-scale');
+  queryInputElement.style.cursor = 'not-allowed';
+  queryInputElement.style.opacity = '0.5';
+  queryInputElement.blur();
+};
+
+const setQueryInputLoadingCompleted = () => {
+  (queryInputElement as HTMLInputElement).value = '';
+  queryInputElement.classList.remove('animate-infinite-scale');
+  queryInputElement.style.cursor = 'default';
+  queryInputElement.style.opacity = '1';
+  queryInputElement.focus();
+};

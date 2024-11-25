@@ -47,6 +47,20 @@ const queryResponseCopyIconElement = createElement(
   false
 );
 
+const getMoreCreditsElement = createElement(
+  'span',
+  {
+    "position": "relative",
+    "text-decoration": "underline",
+    "cursor": "pointer",
+    "margin-left": "3px"
+  },
+  undefined,
+  [],
+  'Get more credits',
+  false
+);
+
 const hideQueryResponse = () => {
   queryResponseElement.style.opacity = '0';
   queryResponseElement.style.bottom = '250px';
@@ -58,10 +72,14 @@ const hideQueryResponse = () => {
   }, 250);
 };
 
-const showQueryResponseWithMessage = (message: string, isErrorMessage?: boolean) => {
+const showQueryResponseWithMessage = (message: string, isErrorMessage?: boolean, onGetMoreCredits?: () => void) => {
   queryResponseElement.innerText = message;
   queryResponseElement.style.opacity = '1';
   if (!isErrorMessage) queryResponseElement.appendChild(queryResponseCopyIconElement);
   queryResponseElement.style.left = `${window.innerWidth / 2 - 225}px`;
   queryResponseElement.style.background = isErrorMessage ? '#FF2424' : '#2F2F2F';
+  if (onGetMoreCredits) {
+    queryResponseElement.appendChild(getMoreCreditsElement);
+    getMoreCreditsElement.addEventListener('click', onGetMoreCredits);
+  }
 };

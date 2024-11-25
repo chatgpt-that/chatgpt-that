@@ -40,7 +40,7 @@ export class StripeService {
     // Remove existing session (if any) and create new session.
     try {
       const existingCheckoutSession = await this.stripeRepository.findOne({ user_email: createCheckoutUrlDto.userEmail });
-      if (existingCheckoutSession) await this.stripeRepository.removeOne({ user_email: existingCheckoutSession.user_email });
+      if (existingCheckoutSession) await this.stripeRepository.stripeCheckoutSessionModel.deleteMany({ user_email: existingCheckoutSession.user_email });
     } catch (err) {
       console.error(`[Server]: Error finding and removing existing stripe checkout session - ${err}`);
     } finally {

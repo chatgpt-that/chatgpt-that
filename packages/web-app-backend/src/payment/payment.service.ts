@@ -30,9 +30,9 @@ export class PaymentService {
 
   async completeCheckoutSession(completeCheckoutSessionDto: CompleteCheckoutSessionDTO) {
     const stripeCheckoutSession = await this.stripeService.stripeRepository.findOne({ user_email: completeCheckoutSessionDto.userEmail });
-    if (!stripeCheckoutSession) throw Error('Cannot find related stripe checkout session');
+    if (!stripeCheckoutSession) throw 'Cannot find related stripe checkout session';
     const session = await this.stripeService.stripe.checkout.sessions.retrieve(stripeCheckoutSession.session_id);
-    if (session.payment_status === 'unpaid') throw Error('Payment not completed');
+    if (session.payment_status === 'unpaid') throw 'Payment not completed';
     await this.stripeService.stripeRepository.removeOne({ user_email: completeCheckoutSessionDto.userEmail });
     const user = await this.userService.userRepository.findOne({ email: completeCheckoutSessionDto.userEmail });
     if (!user) throw 'Cannot find user';
@@ -42,7 +42,7 @@ export class PaymentService {
 
   async cancelCheckoutSession(cancelCheckoutSessionDto: CancelCheckoutSessionDTO) {
     const stripeCheckoutSession = await this.stripeService.stripeRepository.findOne({ user_email: cancelCheckoutSessionDto.userEmail });
-    if (!stripeCheckoutSession) throw Error('Cannot find related stripe checkout session');
+    if (!stripeCheckoutSession) throw 'Cannot find related stripe checkout session';
     await this.stripeService.stripeRepository.removeOne({ user_email: cancelCheckoutSessionDto.userEmail });
     return stripeCheckoutSession.redirect_url;
   }

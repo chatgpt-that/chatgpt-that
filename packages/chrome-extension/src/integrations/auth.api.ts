@@ -12,10 +12,10 @@ const createHiddenIFrame = (src: string) => {
 
 const getIdToken = (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const getIdTokenIFrameElement = createHiddenIFrame('http://localhost:3000/get-id-token-iframe');
+    const getIdTokenIFrameElement = createHiddenIFrame(`${BACKEND_HOST}/get-id-token-iframe`);
     window.addEventListener('message', (event) => {
       try {
-        if (event.origin !== 'http://localhost:3000') return;
+        if (event.origin !== BACKEND_HOST) return;
         const { intendedForChatGPTThat, id_token } = JSON.parse(event.data);
         if (!intendedForChatGPTThat) return reject('Invalid message');
         return resolve(id_token ?? '');
@@ -30,10 +30,10 @@ const getIdToken = (): Promise<string> => {
 
 const login = (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const loginIFrameElement = createHiddenIFrame('http://localhost:3000/login-iframe');
+    const loginIFrameElement = createHiddenIFrame(`${BACKEND_HOST}/login-iframe`);
     window.addEventListener('message', (event) => {
       try {
-        if (event.origin !== 'http://localhost:3000') return;
+        if (event.origin !== BACKEND_HOST) return;
         const { intendedForChatGPTThat, error, id_token } = JSON.parse(event.data);
         if (!intendedForChatGPTThat) return reject('Invalid message');
         if (error) return reject(error);
@@ -49,10 +49,10 @@ const login = (): Promise<string> => {
 
 const logout = (): Promise<void> => {
   return new Promise((resolve, reject) => {
-    const logoutIFrameElement = createHiddenIFrame('http://localhost:3000/logout-iframe');
+    const logoutIFrameElement = createHiddenIFrame(`${BACKEND_HOST}/logout-iframe`);
     window.addEventListener('message', (event) => {
       try {
-        if (event.origin !== 'http://localhost:3000') return;
+        if (event.origin !== BACKEND_HOST) return;
         const { intendedForChatGPTThat, status } = JSON.parse(event.data);
         if (!intendedForChatGPTThat) return reject('Invalid message');
         if (status !== 'completed') return reject('Unable to logout');

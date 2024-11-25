@@ -19,20 +19,20 @@ styleContainerElement.innerHTML = `
       scale: 0.5;
     }
 
-    @keyframes infiniteScale {
+    @keyframes infinite-scale {
       0% {
-        transform: scale(0.5);
+        transform: scale(0.9);
       }
       50% {
         transform: scale(1);
       }
       100% {
-        transform: scale(0.5);
+        transform: scale(0.9);
       }
     }
 
     .animate-infinite-scale {
-      animation: infiniteScale 850ms ease-in-out infinite;
+      animation: infinite-scale 850ms ease-in-out infinite;
     }
   </style>
 `;

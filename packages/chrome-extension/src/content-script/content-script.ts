@@ -10,6 +10,7 @@ interface IStateManager {
   selectorResizerPositionY: number;
   selectorResizerMouseDown: boolean;
   initialLoginAttemptCompleted: boolean;
+  isQuerying: boolean;
   id_token: string;
   user: IUser | null;
 }
@@ -21,6 +22,7 @@ const STATE_MANAGER: IStateManager = {
   selectorResizerPositionX: INITIAL_SELECTOR_RESIZER_X,
   selectorResizerPositionY: INITIAL_SELECTOR_RESIZER_Y,
   selectorResizerMouseDown: false,
+  isQuerying: false,
 
   // Authentication
   initialLoginAttemptCompleted: false,
@@ -53,6 +55,12 @@ const fetchAndSetIdToken = async (setUser?: boolean) => {
     selectorElement.style.cursor = 'pointer'; 
   } 
 }; 
+
+const redirectToStripeCheckout = () => {
+  createStripeCheckoutUrl(STATE_MANAGER.id_token)
+  .then((stripeCheckoutUrl) => window.location.href = stripeCheckoutUrl)
+  .catch(() => showQueryResponseWithMessage('Error creating stripe payment url', true));
+};
 
 // Initial login attempt
 fetchAndSetIdToken(true); 
@@ -127,9 +135,7 @@ selectorElement.addEventListener('dblclick', async (event) => {
   }
 
   if (STATE_MANAGER.user.credits <= 0) {
-    return createStripeCheckoutUrl(STATE_MANAGER.id_token)
-    .then((stripeCheckoutUrl) => window.location.href = stripeCheckoutUrl)
-    .catch(() => showQueryResponseWithMessage('Error creating stripe payment url', true));
+    return redirectToStripeCheckout();
   }
 
   toggleSelectorResizerElement();
@@ -140,9 +146,24 @@ selectorElement.addEventListener('dblclick', async (event) => {
 });
 
 // QUERY INPUT
+queryInputElement.addEventListener('keydown', (event) => {
+  if (!STATE_MANAGER.isQuerying) return;
+  event.stopPropagation();
+  event.preventDefault();
+});
+
 queryInputElement.addEventListener('keyup', async (event) => {
+  if (event.key !== 'Enter') return;
   try {
-    if (event.key !== 'Enter') return;
+
+    if (STATE_MANAGER.user && STATE_MANAGER.user.credits <= 0) {
+      try { getMoreCreditsElement.removeEventListener('click', redirectToStripeCheckout) } catch{}
+      return showQueryResponseWithMessage('Out of credits! ', true, redirectToStripeCheckout);
+    }
+
+    const queryText = (event.target as HTMLInputElement).value;
+    setQueryInputIsLoading();
+    STATE_MANAGER.isQuerying = true;
     await fetchAndSetIdToken();
     const rectangle = calculateRectangle(
       STATE_MANAGER.selectorPositionX, 
@@ -151,12 +172,14 @@ queryInputElement.addEventListener('keyup', async (event) => {
       STATE_MANAGER.selectorResizerPositionY, 
     );
     const imageDataUrl = await createImageDataUrlFromSelectedField(rectangle);
-    const queryResponse = await queryImage(STATE_MANAGER.id_token, imageDataUrl, (event.target as HTMLInputElement).value);
+    const queryResponse = await queryImage(STATE_MANAGER.id_token, imageDataUrl, queryText);
     showQueryResponseWithMessage(queryResponse);
-    (event.target as HTMLInputElement).value = '';
     if (STATE_MANAGER.user?.credits) STATE_MANAGER.user.credits -= 1;
   } catch (err) {
     showQueryResponseWithMessage(err as string, true);
+  } finally {
+    setQueryInputLoadingCompleted();
+    STATE_MANAGER.isQuerying = false;
   }
 });
 

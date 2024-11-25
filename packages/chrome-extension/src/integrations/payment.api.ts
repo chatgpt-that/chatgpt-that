@@ -2,7 +2,7 @@
 const createStripeCheckoutUrl = (id_token: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     fetch(
-      'http://localhost:3000/api/payment/checkout',
+      `${BACKEND_HOST}/api/payment/checkout`,
       {
         method: 'POST',
         headers: {

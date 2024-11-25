@@ -8,7 +8,7 @@ interface IUser {
 const getUser = (id_token: string): Promise<IUser> => {
   return new Promise((resolve, reject) => {
     fetch(
-      'http://localhost:3000/api/user',
+      `${BACKEND_HOST}/api/user`,
       {
         method: 'GET',
         headers: {

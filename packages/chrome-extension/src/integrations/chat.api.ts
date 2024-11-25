@@ -2,7 +2,7 @@
 const queryImage = (id_token: string, imageDataUrl: string, queryText: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     fetch(
-      'http://localhost:3000/api/chat/query',
+      `${BACKEND_HOST}/api/chat/query`,
       {
         method: 'POST',
         headers: {
@@ -16,9 +16,10 @@ const queryImage = (id_token: string, imageDataUrl: string, queryText: string): 
       }
     )
     .then(async (response) => {
-      const data = await response.text();
-      resolve(data);
+      const responsePayload = await response.text();
+      if (!response.ok) return reject(responsePayload);
+      return resolve(responsePayload);
     })
-    .catch(() => reject('Failed to query'));
+    .catch(reject);
   });
 };

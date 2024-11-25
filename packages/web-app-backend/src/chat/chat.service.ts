@@ -18,8 +18,8 @@ export class ChatService {
 
   async query(queryDto: QueryDTO) {
     const user = await this.userService.userRepository.findOne({ email: queryDto.userEmail });
-    if (!user) throw Error('Cannot find associated user');
-    if (user.credits <= 0) throw Error('Out of credits');
+    if (!user) throw 'Cannot find associated user';
+    if (user.credits <= 0) throw 'Out of credits';
     const uuidFileName = uuid() + '.png';
     const hostedImageUrl = await this.s3BucketService.saveImageToBucket(queryDto.imageDataUrl, uuidFileName);
     const queryResult = await this.openaiService.queryImage(hostedImageUrl, queryDto.queryText);
