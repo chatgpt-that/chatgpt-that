@@ -2,7 +2,19 @@
 // STATE MANAGER
 //////////////////////////////////////////////////
 
-const STATE_MANAGER = {
+interface IStateManager {
+  selectorPositionX: number;
+  selectorPositionY: number;
+  selectorMouseDown: boolean;
+  selectorResizerPositionX: number;
+  selectorResizerPositionY: number;
+  selectorResizerMouseDown: boolean;
+  initialLoginAttemptCompleted: boolean;
+  id_token: string;
+  user: IUser | null;
+}
+
+const STATE_MANAGER: IStateManager = {
   selectorPositionX: INITIAL_SELECTOR_X,
   selectorPositionY: INITIAL_SELECTOR_Y,
   selectorMouseDown: false,
@@ -14,16 +26,36 @@ const STATE_MANAGER = {
   initialLoginAttemptCompleted: false,
   id_token: '',
 
+  // User
+  user: null,
+
 };
 
-// Initial login attempt 
-getIdToken() 
-.then((id_token) => STATE_MANAGER.id_token = id_token) 
-.catch((err) => console.error(`[Client]: Error fetching initial id_token - ${err}`)) 
-.finally(() => {
-  STATE_MANAGER.initialLoginAttemptCompleted = true; 
-  selectorElement.style.cursor = 'pointer';
-});
+const fetchAndSetUser = async () => {
+  try {
+    const user = await getUser(STATE_MANAGER.id_token);
+    STATE_MANAGER.user = user;
+  } catch (err) {
+    showQueryResponseWithMessage('Error fetching user data, try refreshing', true);
+  }
+};
+
+const fetchAndSetIdToken = async (setUser?: boolean) => { 
+  try { 
+    const id_token = await getIdToken();
+    STATE_MANAGER.id_token = id_token;
+    if (setUser && id_token) await fetchAndSetUser();
+  } catch (err) { 
+    console.error(`[Client]: Error fetching initial id_token - ${err}`); 
+  } finally { 
+    if (STATE_MANAGER.initialLoginAttemptCompleted) return; 
+    STATE_MANAGER.initialLoginAttemptCompleted = true; 
+    selectorElement.style.cursor = 'pointer'; 
+  } 
+}; 
+
+// Initial login attempt
+fetchAndSetIdToken(true); 
 
 //////////////////////////////////////////////////
 // EVENT LISTENERS
@@ -80,7 +112,10 @@ selectorElement.addEventListener('dblclick', async (event) => {
  
   if (!STATE_MANAGER.id_token) {
     return login()
-    .then((id_token) => STATE_MANAGER.id_token = id_token)
+    .then((id_token) => {
+      STATE_MANAGER.id_token = id_token;
+      fetchAndSetUser();
+    })
     .catch((err) => {
       console.error(`[Client]: Error logging in - ${err}`);
       showQueryResponseWithMessage('Unable to log in at this time, please refresh and try again', true);
@@ -116,6 +151,7 @@ logoutButtonElement.addEventListener('click', () => {
     toggleShowLogoutButton();
     hideQueryResponse();
     STATE_MANAGER.id_token = '';
+    STATE_MANAGER.user = null;
   })
   .catch((err) => {
     console.error(`[Client]: Failed to logout - ${err}`);
