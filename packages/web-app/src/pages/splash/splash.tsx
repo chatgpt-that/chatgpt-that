@@ -83,7 +83,7 @@ export function SplashPage() {
         selectedFeature={selectedVoteFeature}
         onSelectFeature={(vote) => handleFeatureVote(vote as 0 | 1 | 2)}
       />
-      <iframe className='rounded-xl' width="1280" height="720" src="https://www.youtube.com/embed/CsrmS0id6So?si=VHZiivbn3xoC1Q6t" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+      <iframe className='rounded-xl' width="1280" height="720" src="https://www.youtube.com/embed/-vfIX4fSJHc?si=mcKlaJx2ZcO7dlfh" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
       <div className='w-full grid grid-cols-2 gap-[50px]'>
         <Feedback onSubmit={handleSubmitFeedback} characterLimit={450} value={feedbackValue} onChange={setFeedbackValue}/>
         <FAQ faqs={faqs}/>
