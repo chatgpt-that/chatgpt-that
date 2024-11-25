@@ -5,6 +5,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FeatureVoteController } from './src/feature-vote/feature-vote.controller.js';
 import { FeedbackController } from './src/feedback/feedback.controller.js';
+import { UserController } from './src/user/user.controller.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(express.static(publicFolder));
 // Controllers
 new FeatureVoteController(app);
 new FeedbackController(app);
+new UserController(app);
 
 app.get('/api', (req, res) => {
   res.send('[Server]: This endpoint is working as intended.');
