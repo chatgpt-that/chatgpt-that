@@ -40,12 +40,12 @@ const createImageDataUrlFromSelectedField = (rectangle: IRectangle): Promise<str
     html2canvas(
       document.body,
       {
-        x: rectangle.x,
-        y: rectangle.y,
+        x: rectangle.x + window.scrollX,
+        y: rectangle.y + window.scrollY,
         width: rectangle.width,
         height: rectangle.height,
-        scrollX: window.scrollX,
-        scrollY: window.scrollY,
+        scrollX: 0,
+        scrollY: 0,
       }
     )
     .then((canvas: any) => {
