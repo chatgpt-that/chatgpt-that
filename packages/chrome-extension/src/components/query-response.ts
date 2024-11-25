@@ -11,7 +11,7 @@ const queryResponseElement = createElement(
     "border": "none",
     "color": "#FFF",
     "opacity": "0",
-    "background-color": "#2f2f2f",
+    "background-color": "#2F2F2F",
     "z-index": "999999999999999999",
     "box-sizing": "border-box",
     "transition": "all 250ms",
@@ -58,9 +58,9 @@ const hideQueryResponse = () => {
   }, 250);
 };
 
-const showQueryResponseWithMessage = (text: string) => {
-  queryResponseElement.innerText = text;
-  queryResponseElement.appendChild(queryResponseCopyIconElement);
+const showQueryResponseWithMessage = (message: string, isErrorMessage?: boolean) => {
+  queryResponseElement.innerText = message;
   queryResponseElement.style.opacity = '1';
   queryResponseElement.style.left = `${window.innerWidth / 2 - 225}px`;
+  queryResponseElement.style.background = isErrorMessage ? '#FF2424' : '#2F2F2F';
 };

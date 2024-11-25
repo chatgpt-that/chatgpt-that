@@ -19,7 +19,7 @@ const STATE_MANAGER = {
 // Initial login attempt 
 getIdToken() 
 .then((id_token) => STATE_MANAGER.id_token = id_token) 
-.catch((err) => console.error(`[Client]: Error fetching id_token - ${err}`)) 
+.catch((err) => console.error(`[Client]: Error fetching initial id_token - ${err}`)) 
 .finally(() => {
   STATE_MANAGER.initialLoginAttemptCompleted = true; 
   selectorElement.style.cursor = 'pointer';
@@ -73,8 +73,20 @@ selectorResizerElement.addEventListener('mousedown', (event) => {
 });
 
 selectorElement.addEventListener('dblclick', async (event) => {
-  if (!STATE_MANAGER.initialLoginAttemptCompleted) return console.error(`[Client]: Attemping to authenticate, please wait`);
-  if (!STATE_MANAGER.id_token) return login().then((id_token) => STATE_MANAGER.id_token = id_token).catch();
+  if (!STATE_MANAGER.initialLoginAttemptCompleted) {
+    showQueryResponseWithMessage('Attempting to authenticate, please wait', true);
+    return;
+  }
+ 
+  if (!STATE_MANAGER.id_token) {
+    return login()
+    .then((id_token) => STATE_MANAGER.id_token = id_token)
+    .catch((err) => {
+      console.error(`[Client]: Error logging in - ${err}`);
+      showQueryResponseWithMessage('Unable to log in at this time, please refresh and try again', true);
+    });
+  }
+
   toggleSelectorResizerElement();
   toggleSelectionBoxElement();
   toggleShowQueryInput();
@@ -107,5 +119,6 @@ logoutButtonElement.addEventListener('click', () => {
   })
   .catch((err) => {
     console.error(`[Client]: Failed to logout - ${err}`);
+    showQueryResponseWithMessage('Unable to log out at this time, please refresh and try again', true);
   });
 });
