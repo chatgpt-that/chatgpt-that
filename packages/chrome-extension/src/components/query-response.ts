@@ -61,6 +61,7 @@ const hideQueryResponse = () => {
 const showQueryResponseWithMessage = (message: string, isErrorMessage?: boolean) => {
   queryResponseElement.innerText = message;
   queryResponseElement.style.opacity = '1';
+  if (!isErrorMessage) queryResponseElement.appendChild(queryResponseCopyIconElement);
   queryResponseElement.style.left = `${window.innerWidth / 2 - 225}px`;
   queryResponseElement.style.background = isErrorMessage ? '#FF2424' : '#2F2F2F';
 };

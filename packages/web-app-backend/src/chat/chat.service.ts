@@ -13,7 +13,7 @@ export class ChatService {
     this.query=this.query.bind(this);
     this.userService = new UserService();
     this.openaiService = new OpenAiService();
-    this.s3BucketService = new S3BucketService('chatgpt-that');
+    this.s3BucketService = new S3BucketService('sase-chrome-extension-001');
   }
 
   async query(queryDto: QueryDTO) {

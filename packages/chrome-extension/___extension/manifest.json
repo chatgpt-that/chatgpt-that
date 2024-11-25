@@ -7,6 +7,8 @@
     {
       "matches": ["<all_urls>"],
       "js": [
+        "node_modules/html2canvas/dist/html2canvas.min.js",
+
         "build/variables/variables.js",
         "build/utils/utils.js",
         "build/styles/styles.js",
@@ -21,6 +23,7 @@
         "build/integrations/auth.api.js",
         "build/integrations/user.api.js",
         "build/integrations/payment.api.js",
+        "build/integrations/chat.api.js",
 
         "build/content-script/content-script.js"
       ]

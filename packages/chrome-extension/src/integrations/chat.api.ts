@@ -1,8 +1,8 @@
 
-const createStripeCheckoutUrl = (id_token: string): Promise<string> => {
+const queryImage = (id_token: string, imageDataUrl: string, queryText: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     fetch(
-      'http://localhost:3000/api/payment/checkout',
+      'http://localhost:3000/api/chat/query',
       {
         method: 'POST',
         headers: {
@@ -10,14 +10,15 @@ const createStripeCheckoutUrl = (id_token: string): Promise<string> => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          redirectUrl: window.location.origin
+          queryText,
+          imageDataUrl,
         })
       }
     )
     .then(async (response) => {
-      const checkoutUrl = await response.text();
-      resolve(checkoutUrl);
+      const data = await response.text();
+      resolve(data);
     })
-    .catch(() => reject('Error completing payment'))
+    .catch(() => reject('Failed to query'));
   });
 };

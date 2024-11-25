@@ -105,7 +105,6 @@ selectorResizerElement.addEventListener('mousedown', (event) => {
 });
 
 selectorElement.addEventListener('dblclick', async (event) => {
-  console.log({id_token: STATE_MANAGER.id_token, user: STATE_MANAGER.user});
   if (!STATE_MANAGER.initialLoginAttemptCompleted) {
     showQueryResponseWithMessage('Attempting to authenticate, please wait', true);
     return;
@@ -141,9 +140,24 @@ selectorElement.addEventListener('dblclick', async (event) => {
 });
 
 // QUERY INPUT
-queryInputElement.addEventListener('keyup', (event) => {
-  if (event.key !== 'Enter') return;
-  showQueryResponseWithMessage((event.target as any).value);
+queryInputElement.addEventListener('keyup', async (event) => {
+  try {
+    if (event.key !== 'Enter') return;
+    await fetchAndSetIdToken();
+    const rectangle = calculateRectangle(
+      STATE_MANAGER.selectorPositionX, 
+      STATE_MANAGER.selectorResizerPositionX ,
+      STATE_MANAGER.selectorPositionY, 
+      STATE_MANAGER.selectorResizerPositionY, 
+    );
+    const imageDataUrl = await createImageDataUrlFromSelectedField(rectangle);
+    const queryResponse = await queryImage(STATE_MANAGER.id_token, imageDataUrl, (event.target as HTMLInputElement).value);
+    showQueryResponseWithMessage(queryResponse);
+    (event.target as HTMLInputElement).value = '';
+    if (STATE_MANAGER.user?.credits) STATE_MANAGER.user.credits -= 1;
+  } catch (err) {
+    showQueryResponseWithMessage(err as string, true);
+  }
 });
 
 // QUERY RESPONSE COPY ICON

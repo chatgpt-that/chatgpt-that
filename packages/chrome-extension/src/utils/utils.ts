@@ -1,4 +1,13 @@
 
+declare const html2canvas: any;
+
+interface IRectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 const createElement = (
   type: string,
   styles: {[key: string]: unknown},
@@ -16,45 +25,33 @@ const createElement = (
   return node;
 };
 
+const calculateRectangle = (x1: number, x2: number, y1: number, y2: number): IRectangle => {
+  const x = x1 < x2 ? x1 : x2;
+  const y = y1 < y2 ? y1 : y2;
+  const endX = x1 > x2 ? x1 : x2;
+  const endY = y1 > y2 ? y1 : y2;
+  const width = endX - x;
+  const height = endY - y;
+  return { x, y, width, height };
+};
 
-// /**
-//  * @param {number} x1
-//  * @param {number} x2 
-//  * @param {number} y1 
-//  * @param {number} y2 
-//  * @returns { x: number; y: number; width: number; height: number }
-//  */
-// const calculateRectangle = (x1, x2, y1, y2) => {
-//   const x = x1 < x2 ? x1 : x2;
-//   const y = y1 < y2 ? y1 : y2;
-//   const endX = x1 > x2 ? x1 : x2;
-//   const endY = y1 > y2 ? y1 : y2;
-//   const width = endX - x;
-//   const height = endY - y;
-//   return { x, y, width, height };
-// };
-
-
-// /**
-//  * @param {{ x: number; y: number; width: number; height: number }} rectange
-//  * @param {(imageDataUrl: string) => void} callback
-//  * @returns {void}
-//  */
-// const getSelectorDataUrl = (rectange, callback) => {
-//   html2canvas(
-//     document.body,
-//     { 
-//       x: rectange.x,
-//       y: rectange.y,
-//       width: rectange.width,
-//       height: rectange.height,
-//       scrollX: 0,
-//       scrollY: 0,
-//     }
-//   )
-//   .then((canvas) => {
-//     const imageDataUrl = canvas.toDataURL('image/png');
-//     if (callback) callback(imageDataUrl);
-//   })
-//   .catch(error => console.error(`Error loading page into image - ${error}`));
-// };
+const createImageDataUrlFromSelectedField = (rectangle: IRectangle): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    html2canvas(
+      document.body,
+      {
+        x: rectangle.x,
+        y: rectangle.y,
+        width: rectangle.width,
+        height: rectangle.height,
+        scrollX: window.scrollX,
+        scrollY: window.scrollY,
+      }
+    )
+    .then((canvas: any) => {
+      const imageDataUrl = canvas.toDataURL('image/png');
+      return resolve(imageDataUrl);
+    })
+    .catch(reject);
+  });
+};

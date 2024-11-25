@@ -22,6 +22,6 @@ const getUser = (id_token: string): Promise<IUser> => {
       if (data.error) return reject(data.error);
       resolve(data);
     })
-    .catch(reject);
+    .catch(() => reject('Error fetching user'));
   });
 };
