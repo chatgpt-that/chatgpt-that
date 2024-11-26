@@ -33,28 +33,68 @@ const STATE_MANAGER: IStateManager = {
 
 };
 
-const fetchAndSetUser = async () => {
+const checkIdTokenAndRemoveIfExpired = async () => {
   try {
-    const user = await getUser(STATE_MANAGER.id_token);
-    STATE_MANAGER.user = user;
+    const idToken = await getIdTokenFromStorage();
+    if (!idToken) {
+      STATE_MANAGER.user = null;
+      return STATE_MANAGER.id_token = '';
+    }
+    const tokenClaims = decodeJwtPayload(idToken);
+    const tokenExpiration = new Date(tokenClaims.exp as number * 1000);
+    if (tokenExpiration.getTime() > new Date().getTime()) return;
+    await clearIdTokenOnStorage();
+    STATE_MANAGER.user = null;
+    STATE_MANAGER.id_token = '';
   } catch (err) {
-    showQueryResponseWithMessage('Error fetching user data, try refreshing', true);
+    if (IS_DEV_ENV) console.error(`[Dev]: Failed to check id token - ${err}`);
   }
 };
 
-const fetchAndSetIdToken = async (setUser?: boolean) => { 
-  try { 
-    const id_token = await getIdToken();
-    STATE_MANAGER.id_token = id_token;
-    if (setUser && id_token) await fetchAndSetUser();
-  } catch (err) { 
-    console.error(`[Client]: Error fetching initial id_token - ${err}`); 
-  } finally { 
-    if (STATE_MANAGER.initialLoginAttemptCompleted) return; 
-    STATE_MANAGER.initialLoginAttemptCompleted = true; 
-    selectorElement.style.cursor = 'pointer'; 
-  } 
-}; 
+const getIdTokenAndSetUserIfAvailable = async () => {
+  try {
+    const idToken = await getIdTokenFromStorage();
+    if (!idToken) return IS_DEV_ENV ? console.log(`[Dev]: getIdTokenAndSetUserIfAvailable Failed - No IdToken in Chrome Storage`) : null;
+    IS_DEV_ENV && console.log(`[Dev]: Retrieved id_token - ${idToken.length}`);
+    STATE_MANAGER.id_token = idToken;
+    const user = await getUser(STATE_MANAGER.id_token);
+    STATE_MANAGER.user = user;
+  } catch (err) {
+    console.error(`[Client]: Failed to fetch user - ${err}`);
+    showQueryResponseWithMessage('Failed to fetch user, please refresh and try again.', true);
+  } finally {
+    STATE_MANAGER.initialLoginAttemptCompleted = true;
+    selectorElement.style.cursor = 'pointer';
+  }
+};
+
+const loginAndUpdateState = async () => {
+  try {
+    const idToken = await login();
+    await setIdTokenOnStorage(idToken);
+    await getIdTokenAndSetUserIfAvailable();
+  } catch (err) {
+    console.error(`[Client]: Failed to login - ${err}`);
+    showQueryResponseWithMessage('Failed to login, please refresh and try again.', true);
+  }
+};
+
+const logoutAndUpdateState = async () => {
+  try {
+    await logout();
+    STATE_MANAGER.user = null;
+    STATE_MANAGER.id_token = '';
+    toggleSelectorResizerElement();
+    toggleSelectionBoxElement();
+    toggleShowQueryInput();
+    toggleShowLogoutButton();
+    hideQueryResponse();
+    await clearIdTokenOnStorage();
+  } catch (err) {
+    console.error(`[Client]: Failed to logout - ${err}`);
+    showQueryResponseWithMessage('Failed to logout, please refresh and try again.', true);
+  }
+};
 
 const redirectToStripeCheckout = () => {
   createStripeCheckoutUrl(STATE_MANAGER.id_token)
@@ -63,7 +103,8 @@ const redirectToStripeCheckout = () => {
 };
 
 // Initial login attempt
-fetchAndSetIdToken(true); 
+checkIdTokenAndRemoveIfExpired();
+getIdTokenAndSetUserIfAvailable();
 
 //////////////////////////////////////////////////
 // EVENT LISTENERS
@@ -118,20 +159,10 @@ selectorElement.addEventListener('dblclick', async (event) => {
     return;
   }
  
-  if (!STATE_MANAGER.id_token) {
-    return login()
-    .then((id_token) => {
-      STATE_MANAGER.id_token = id_token;
-      fetchAndSetUser();
-    })
-    .catch((err) => {
-      console.error(`[Client]: Error logging in - ${err}`);
-      showQueryResponseWithMessage('Unable to log in at this time, please refresh and try again', true);
-    });
-  }
+  if (!STATE_MANAGER.id_token) await loginAndUpdateState();
 
   if (!STATE_MANAGER.user) {
-    return showQueryResponseWithMessage('Ran into an issue retrieving user data, please refresh and try again', true);
+    return showQueryResponseWithMessage('Failed to retrieve user, please refresh and try again', true);
   }
 
   if (STATE_MANAGER.user.credits <= 0) {
@@ -164,7 +195,6 @@ queryInputElement.addEventListener('keyup', async (event) => {
     const queryText = (event.target as HTMLInputElement).value;
     setQueryInputIsLoading();
     STATE_MANAGER.isQuerying = true;
-    await fetchAndSetIdToken();
     const rectangle = calculateRectangle(
       STATE_MANAGER.selectorPositionX, 
       STATE_MANAGER.selectorResizerPositionX ,
@@ -190,19 +220,4 @@ queryResponseCopyIconElement.addEventListener('click', async () => {
 });
 
 // LOGOUT BUTTON
-logoutButtonElement.addEventListener('click', () => {
-  logout()
-  .then(() => {
-    toggleSelectorResizerElement();
-    toggleSelectionBoxElement();
-    toggleShowQueryInput();
-    toggleShowLogoutButton();
-    hideQueryResponse();
-    STATE_MANAGER.id_token = '';
-    STATE_MANAGER.user = null;
-  })
-  .catch((err) => {
-    console.error(`[Client]: Failed to logout - ${err}`);
-    showQueryResponseWithMessage('Unable to log out at this time, please refresh and try again', true);
-  });
-});
+logoutButtonElement.addEventListener('click', logoutAndUpdateState);

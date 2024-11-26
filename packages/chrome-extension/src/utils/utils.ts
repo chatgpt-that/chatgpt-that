@@ -55,3 +55,37 @@ const createImageDataUrlFromSelectedField = (rectangle: IRectangle): Promise<str
     .catch(reject);
   });
 };
+
+const decodeJwtPayload = (token: string) => {
+  const [_1, payload, _3] = token.split('.');
+  const payloadBase64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+  const payloadDecoded = atob(payloadBase64);
+  return JSON.parse(payloadDecoded);
+};
+
+const getIdTokenFromStorage = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({access_storage: true, get_id_token: true}, (response) => {
+      if (response.err) return reject(response.err);
+      else return resolve(response.data);
+    });
+  });
+};
+
+const setIdTokenOnStorage = (idToken: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({access_storage: true, set_id_token: true, id_token: idToken}, (response) => {
+      if (response.err) return reject(response.err);
+      else return resolve(response.data);
+    });
+  });
+};
+
+const clearIdTokenOnStorage = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({access_storage: true, remove_id_token: true}, (response) => {
+      if (response.err) return reject(response.err);
+      else return resolve(response.data);
+    });
+  });
+};

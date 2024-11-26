@@ -8,6 +8,12 @@
     "48": "assets/chatgpt-that-icon.png",
     "128": "assets/chatgpt-that-icon.png"
   },
+  "permissions": [
+    "storage"
+  ],
+  "background": {
+    "service_worker": "build/background-script/background-script.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
