@@ -9,7 +9,11 @@
     "128": "assets/chatgpt-that-icon.png"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "build/background-script/background-script.js"
@@ -18,8 +22,6 @@
     {
       "matches": ["<all_urls>"],
       "js": [
-        "node_modules/html2canvas/dist/html2canvas.min.js",
-
         "build/variables/variables.js",
         "build/utils/utils.js",
         "build/styles/styles.js",

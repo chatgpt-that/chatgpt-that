@@ -201,7 +201,7 @@ queryInputElement.addEventListener('keyup', async (event) => {
       STATE_MANAGER.selectorPositionY, 
       STATE_MANAGER.selectorResizerPositionY, 
     );
-    const imageDataUrl = await createImageDataUrlFromSelectedField(rectangle);
+    const imageDataUrl = await createImageDataUrlFromViewport(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     const queryResponse = await queryImage(STATE_MANAGER.id_token, imageDataUrl, queryText);
     showQueryResponseWithMessage(queryResponse);
     if (STATE_MANAGER.user?.credits) STATE_MANAGER.user.credits -= 1;

@@ -24,8 +24,20 @@ const clearIdTokenOnStorage_ = (): Promise<void> => {
   });
 };
 
+const captureViewport_ = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.captureVisibleTab()
+    .then((imageDataUrl) => resolve(imageDataUrl))
+    .catch((err) => reject(err));
+  });
+};
+
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
-  if (!message.access_storage) {
+  if (message.captureViewport) {
+    captureViewport_()
+    .then((imageDataUrl) => sendResponse({ err: null, data: imageDataUrl }))
+    .catch((err) => sendResponse({ err: err.toString(), data: null }));
+  } else if (!message.access_storage) {
     sendResponse({ err: 'access_storage is false', data: null });
   } else if (message['get_id_token']) {
     getIdTokenFromStorage_()

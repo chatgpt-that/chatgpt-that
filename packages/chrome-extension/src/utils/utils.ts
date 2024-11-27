@@ -1,6 +1,4 @@
 
-declare const html2canvas: any;
-
 interface IRectangle {
   x: number;
   y: number;
@@ -35,27 +33,6 @@ const calculateRectangle = (x1: number, x2: number, y1: number, y2: number): IRe
   return { x, y, width, height };
 };
 
-const createImageDataUrlFromSelectedField = (rectangle: IRectangle): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    html2canvas(
-      document.body,
-      {
-        x: rectangle.x + window.scrollX,
-        y: rectangle.y + window.scrollY,
-        width: rectangle.width,
-        height: rectangle.height,
-        scrollX: 0,
-        scrollY: 0,
-      }
-    )
-    .then((canvas: any) => {
-      const imageDataUrl = canvas.toDataURL('image/png');
-      return resolve(imageDataUrl);
-    })
-    .catch(reject);
-  });
-};
-
 const decodeJwtPayload = (token: string) => {
   const [_1, payload, _3] = token.split('.');
   const payloadBase64 = payload.replace(/-/g, '+').replace(/_/g, '/');
@@ -87,5 +64,54 @@ const clearIdTokenOnStorage = (): Promise<void> => {
       if (response.err) return reject(response.err);
       else return resolve(response.data);
     });
+  });
+};
+
+const captureViewport = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({captureViewport: true}, (response) => {
+      if (response.err) return reject(response.err);
+      else return resolve(response.data);
+    })
+  })
+};
+
+const downloadImageFromDataUrl = (imageDataUrl: string, fileName: string) => {
+  const link = document.createElement('a');
+  link.href = imageDataUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+const createImageDataUrlFromViewport = (x: number, y: number, width: number, height: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    captureViewport()
+    .then((imageDataUrl) => {
+      const image = new Image();
+      image.src = imageDataUrl;
+      image.crossOrigin = 'Anonymous';
+      image.onload = () => {
+        const { naturalWidth, naturalHeight } = image;
+        const scaleX = naturalWidth / window.innerWidth;
+        const scaleY = naturalHeight / window.innerHeight;
+        const scaledX = x * scaleX;
+        const scaledY = y * scaleY;
+        const scaledWidth = width * scaleX;
+        const scaledHeight = height * scaleY;
+        const cropWidth = Math.min(scaledWidth, naturalWidth - scaledX);
+        const cropHeight = Math.min(scaledHeight, naturalHeight - scaledY);
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject('Could not get canvas context');
+        ctx.drawImage(image, scaledX, scaledY, cropWidth, cropHeight, 0, 0, width, height);
+        resolve(canvas.toDataURL());
+      };
+      image.onerror = (error) => reject(error);
+    })
+    .catch(reject);
   });
 };
