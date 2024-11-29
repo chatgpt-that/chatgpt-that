@@ -7,6 +7,7 @@ module.exports = {
   entry: path.resolve(__dirname, 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'public', '___build'),
+    publicPath: '/',
     filename: 'web-app-bundle.cjs',
   },
   module: {

@@ -1,8 +1,8 @@
 
 # Packages
 **/node_modules/
-packages/**/build/
-packages/**/___build/
+# packages/**/build/
+# packages/**/___build/
 packages/**/___release/
 
 # Environment

@@ -29,7 +29,7 @@ export const featureVoteItems: FeatureItem[] = [
 export const faqs: FAQ[] = [
   {
     question: 'What is ChatGPT',
-    answer: `ChatGPT is a large language model (llm) or AI 
+    answer: `ChatGPT is a large language model (LLM) or AI 
     developed by OpenAI. It is an AI that has been trained 
     using the vast amount of information available on the  
     internet. In it's simplest form, it's a computer       
@@ -54,7 +54,7 @@ export const faqs: FAQ[] = [
     charges developers to use their Api, along with this   
     ChatGPT That has a ton of planned features that will   
     require developer resources. That being said, ChatGPT  
-    That will regularly give free credits and aim to breing
+    That will regularly give free credits and aim to bring 
     the cost down to a minimum.`
   },
   {
