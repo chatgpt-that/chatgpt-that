@@ -21,13 +21,13 @@ styleContainerElement.innerHTML = `
 
     @keyframes infinite-scale {
       0% {
-        transform: scale(0.9);
+        transform: scale(0.95);
       }
       50% {
         transform: scale(1);
       }
       100% {
-        transform: scale(0.9);
+        transform: scale(0.95);
       }
     }
 

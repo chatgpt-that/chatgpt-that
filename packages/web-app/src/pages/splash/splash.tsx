@@ -7,6 +7,7 @@ import { FAQ } from '../../components/faq/faq';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getFeatureVote, upsertFeatureVote } from '../../api/feature-vote.api';
 import { sendFeedback } from '../../api/feedback.api';
+import { AddToChromeButton } from '../../components/add-to-chrome-button/add-to-chrome-button';
 
 export function SplashPage() {
   const { user, isAuthenticated, loginWithPopup, logout, getIdTokenClaims } = useAuth0();
@@ -77,6 +78,7 @@ export function SplashPage() {
       <div className='flex flex-col gap-4 items-center'>
         <div className='font-[Gilroy] font-[900] text-7xl text-[#000000d9]'>CHATGPT THAT</div>
         <div className='font-[Gilroy] font-[400] text-2xl text-gray-300'>Imagine If ChatGPT could see what you see. Now it can.</div>
+        <div className='w-[225px]'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
       </div>
       <FeatureVote 
         features={featureVoteItems}
