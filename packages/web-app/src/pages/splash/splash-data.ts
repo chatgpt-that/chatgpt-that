@@ -54,7 +54,7 @@ export const faqs: FAQ[] = [
     charges developers to use their Api, along with this   
     ChatGPT That has a ton of planned features that will   
     require developer resources. That being said, ChatGPT  
-    That will regularly give free credits and aim to breing
+    That will regularly give free credits and aim to bring 
     the cost down to a minimum.`
   },
   {
