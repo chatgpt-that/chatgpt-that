@@ -18,7 +18,7 @@ export function SplashNav({
 }: Readonly<SplashNavProps>) {
   
   return (
-    <nav className='w-full h-[84px] flex items-center justify-between border-b bg-white'>
+    <nav className='w-full h-[84px] flex items-center justify-between border-b-2 bg-white'>
       <div className='flex gap-4 items-center'>
         <div 
           style={{ background: `url(${logoPath})` }} 

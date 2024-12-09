@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { NavItem, SplashNav } from '../../components/splash-nav/splash-nav';
 import { faqs, featureVoteItems, splashNavTitle } from './splash-data';
 import { FeatureVote } from '../../components/feature-vote/feature-vote';
-import { Feedback } from '../../components/feedback/feedback';
 import { FAQ } from '../../components/faq/faq';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getFeatureVote, upsertFeatureVote } from '../../api/feature-vote.api';
 import { sendFeedback } from '../../api/feedback.api';
 import { AddToChromeButton } from '../../components/add-to-chrome-button/add-to-chrome-button';
+import { Pricing } from '../../components/pricing/pricing';
 
 export function SplashPage() {
   const { user, isAuthenticated, loginWithPopup, logout, getIdTokenClaims } = useAuth0();
@@ -88,6 +88,7 @@ export function SplashPage() {
       <div className='border-2 rounded-xl overflow-hidden'>
         <iframe className='' width="1024" height="576"  src="https://www.youtube.com/embed/rVaobBdD0lw?si=TJDsQ0ASuN0pwl6g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
       </div>
+      <Pricing priceItems={[{ name: '100 Tokens', price: '$4.99' }]}/>
       <FAQ faqs={faqs}/>
     </div>
   );

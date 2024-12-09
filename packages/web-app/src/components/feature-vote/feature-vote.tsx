@@ -21,7 +21,7 @@ export function FeatureVote({
   return (
     <div className='w-full relative'>
       <div className='flex gap-2 justify-self-center items-center mb-6'>
-        <span className='font-[Gilroy] font-[900] text-xl text-[#000000d9]'>VOTE</span>
+        <span className='font-[Gilroy] font-bold text-xl text-[#000000d9]'>VOTE</span>
         <span className='font-[Gilroy] font-[500] text-lg text-gray-400'>on an upcoming feature!</span>
       </div>
       <div className='w-full flex justify-between'>

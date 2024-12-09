@@ -29,7 +29,7 @@ export function FAQ({
 
   return (
     <div className='w-full'>
-      <div className='font-[Gilroy] font-bold text-2xl text-[#000000d9] h-[48px] border-b-2'>FAQ</div>
+      <div className='font-[Gilroy] font-bold text-xl text-[#000000d9] h-[48px] border-b-2'>FAQ</div>
       <div>
         { faqs.map((faq) => (
           <div 
