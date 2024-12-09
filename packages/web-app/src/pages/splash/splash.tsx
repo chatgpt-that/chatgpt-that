@@ -69,16 +69,16 @@ export function SplashPage() {
   }, [isAuthenticated]);
   
   return (
-    <div className='flex flex-col gap-24 mb-24 items-center'>
+    <div className='flex flex-col gap-28 mb-24 items-center'>
       <SplashNav 
         title={splashNavTitle}
         navItems={splashNavItems}
         logoPath='assets/icons/chatgpt-that-icon.svg'
       />
       <div className='flex flex-col gap-4 items-center'>
-        <div className='font-[Gilroy] font-[900] text-7xl text-[#000000d9]'>CHATGPT THAT</div>
-        <div className='font-[Gilroy] font-[400] text-2xl text-gray-300'>Imagine If ChatGPT could see what you see. Now it can.</div>
-        <div className='w-[225px]'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
+        <div className='font-[Gilroy] font-[900] text-5xl text-[#000000d9]'>CHATGPT THAT</div>
+        <div className='font-[Gilroy] font-[400] text-xl text-gray-500'>Imagine If ChatGPT can see what you see. Now it can.</div>
+        <div className='w-[208px] mt-2'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
       </div>
       <FeatureVote 
         features={featureVoteItems}
@@ -86,12 +86,9 @@ export function SplashPage() {
         onSelectFeature={(vote) => handleFeatureVote(vote as 0 | 1 | 2)}
       />
       <div className='border-2 rounded-xl overflow-hidden'>
-        <iframe className='' width="1280" height="720"  src="https://www.youtube.com/embed/rVaobBdD0lw?si=TJDsQ0ASuN0pwl6g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+        <iframe className='' width="1024" height="576"  src="https://www.youtube.com/embed/rVaobBdD0lw?si=TJDsQ0ASuN0pwl6g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
       </div>
-      <div className='w-full grid grid-cols-2 gap-[50px]'>
-        <Feedback onSubmit={handleSubmitFeedback} characterLimit={450} value={feedbackValue} onChange={setFeedbackValue}/>
-        <FAQ faqs={faqs}/>
-      </div>
+      <FAQ faqs={faqs}/>
     </div>
   );
 }
