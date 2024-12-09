@@ -32,11 +32,14 @@ export function FAQ({
       <div className='font-[Gilroy] font-[600] text-3xl text-[#000000d9] h-[48px] border-b-2'>FAQ</div>
       <div>
         { faqs.map((faq) => (
-          <div key={faq.question} className='py-6 border-b-2'>
+          <div 
+            key={faq.question} 
+            onClick={() => handleToggleFaq(faq)} 
+            className='py-6 border-b-2 hover:cursor-pointer' 
+          >
             <div className='flex justify-between items-center gap-8'>
               <div className='flex-grow font-[Gilroy] font-[600] text-2xl text-[#000000d9]'>{faq.question}</div>
               <div 
-                onClick={() => handleToggleFaq(faq)} 
                 className='w-[120px] hover:cursor-pointer flex justify-end' 
               >
                 <div 

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT That",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Enabling ChatGPT to see what you see",
   "icons": {
     "16": "assets/chatgpt-that-icon.png",
