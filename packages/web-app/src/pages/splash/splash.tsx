@@ -75,7 +75,7 @@ export function SplashPage() {
         navItems={splashNavItems}
         logoPath='assets/icons/chatgpt-that-icon.svg'
       />
-      <div className='flex flex-col gap-4 items-center'>
+      <div className='flex flex-col gap-4 mt-2 items-center'>
         <div className='font-[Gilroy] font-[900] text-5xl text-[#000000d9]'>CHATGPT THAT</div>
         <div className='font-[Gilroy] font-[400] text-xl text-gray-500'>Imagine If ChatGPT can see what you see. Now it can.</div>
         <div className='w-[208px] mt-2'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
@@ -90,6 +90,11 @@ export function SplashPage() {
       </div>
       <Pricing priceItems={[{ name: '100 Tokens', price: '$4.99' }]}/>
       <FAQ faqs={faqs}/>
+      <div className='w-full flex gap-1 font-[Gilroy] text text-gray-400'>
+        <span>Email us</span>
+        <span className='text-[#407BFF]'>saase.chatgptthat@gmail.com</span>
+        <span>for inquiries</span>
+      </div>
     </div>
   );
 }

@@ -588,8 +588,16 @@ video {
   }
 }
 
+.absolute {
+  position: absolute;
+}
+
 .relative {
   position: relative;
+}
+
+.top-\[110\%\] {
+  top: 110%;
 }
 
 .mb-24 {
@@ -878,6 +886,10 @@ video {
   gap: 5rem;
 }
 
+.gap-1 {
+  gap: 0.25rem;
+}
+
 .justify-self-center {
   justify-self: center;
 }
@@ -1093,6 +1105,10 @@ video {
   font-size: 0.75rem;
 }
 
+.text-\[11px\] {
+  font-size: 11px;
+}
+
 .font-\[400\] {
   font-weight: 400;
 }
@@ -1166,6 +1182,19 @@ video {
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#407BFF\] {
+  --tw-text-opacity: 1;
+  color: rgb(64 123 255 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\] {
+  color: ;
+}
+
+.underline {
+  text-decoration-line: underline;
 }
 
 .opacity-50 {

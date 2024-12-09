@@ -18,7 +18,7 @@ export function SplashNav({
 }: Readonly<SplashNavProps>) {
   
   return (
-    <nav className='w-full h-[84px] flex items-center justify-between border-b-2 bg-white'>
+    <nav className='relative w-full h-[84px] flex items-center justify-between border-b-2 bg-white'>
       <div className='flex gap-4 items-center'>
         <div 
           style={{ background: `url(${logoPath})` }} 
@@ -36,6 +36,16 @@ export function SplashNav({
             { navItem.label }
           </div>
         )) }
+      </div>
+      <div className='absolute flex gap-1 text-[11px] font-[Gilroy] text-gray-400 top-[110%]'>
+        <span>By logging in, you agree to our</span>
+        <a 
+          className='text-[#407BFF] underline'
+          target='__blank'
+          href='https://noiseless-cake-c8a.notion.site/CHATGPT-THAT-Terms-of-Service-Privacy-Policy-1577fc73a92f8099be64d786232ff0bb'
+        >
+        Terms of Service and Privacy Policy
+        </a>
       </div>
     </nav>
   );
