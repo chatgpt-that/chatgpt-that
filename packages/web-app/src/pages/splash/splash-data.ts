@@ -14,14 +14,14 @@ export const featureVoteItems: FeatureItem[] = [
   {
     featureId: 1,
     title: 'CROSS-SITE SNIPPING',
-    description: `Take a snip from any amount of websites 
-    and send all the snips combines as context for the query.`
+    description: `Take a snip from many website websites and 
+    send all the snips combined as context for the query.`
   },
   {
     featureId: 2,
     title: 'SAVE CHAT HISTORY & SNIPPETS',
-    description: `Save snippets, allowing you to bookmark the 
-    pages and savechat history. This makes it into a real chat 
+    description: `Save snippets, allowing you to bookmark the   
+    pages and save chat history. This makes it into a real chat 
     like ChatGPT.`
   }
 ];
@@ -29,7 +29,7 @@ export const featureVoteItems: FeatureItem[] = [
 export const faqs: FAQ[] = [
   {
     question: 'What is ChatGPT',
-    answer: `ChatGPT is a large language model (llm) or AI 
+    answer: `ChatGPT is a Large Language Model (LLM) or AI 
     developed by OpenAI. It is an AI that has been trained 
     using the vast amount of information available on the  
     internet. In it's simplest form, it's a computer       
@@ -59,11 +59,11 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'How can I get ChatGPT That credits',
-    answer: `It's very simple, just ask! Leave a message   
-    using the feedback tool and we will happily fund the   
-    account with a some credits. Keep in mind, there might 
-    be certain limitations due to the demand of these      
-    requests.`
+    answer: `It's very simple, just ask! Send a message to  
+    the email at the bottom of the page and we will happily 
+    fund the account with a some credits. Keep in mind,     
+    there might be certain limitations due to the demand of 
+    these requests.`
   },
   {
     question: 'Do I need an OpenAI account',

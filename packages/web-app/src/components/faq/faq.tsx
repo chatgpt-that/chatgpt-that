@@ -29,7 +29,7 @@ export function FAQ({
 
   return (
     <div className='w-full'>
-      <div className='font-[Gilroy] font-[600] text-3xl text-[#000000d9] h-[48px] border-b-2'>FAQ</div>
+      <div className='font-[Gilroy] font-bold text-xl text-[#000000d9] h-[48px] border-b-2'>FAQ</div>
       <div>
         { faqs.map((faq) => (
           <div 
@@ -38,7 +38,7 @@ export function FAQ({
             className='py-6 border-b-2 hover:cursor-pointer' 
           >
             <div className='flex justify-between items-center gap-8'>
-              <div className='flex-grow font-[Gilroy] font-[600] text-2xl text-[#000000d9]'>{faq.question}</div>
+              <div className='flex-grow font-[Gilroy] font-[600] text-xl text-[#000000d9]'>{faq.question}</div>
               <div 
                 className='w-[120px] hover:cursor-pointer flex justify-end' 
               >
@@ -49,7 +49,7 @@ export function FAQ({
               </div>
             </div>
             { faq.isOpened && (
-              <div className='mt-2 font-[Gilroy] font-[400] text-xl text-gray-400 flex-wrap'>{faq.answer}</div>
+              <div className='mt-2 font-[Gilroy] font-[400] text text-gray-400 flex-wrap'>{faq.answer}</div>
             ) }
           </div>
         )) }

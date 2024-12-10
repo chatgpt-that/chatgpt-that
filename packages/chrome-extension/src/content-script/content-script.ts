@@ -6,6 +6,8 @@ interface IStateManager {
   selectorPositionX: number;
   selectorPositionY: number;
   selectorMouseDown: boolean;
+  selectorHovered: boolean;
+  selectorOpened: boolean;
   selectorResizerPositionX: number;
   selectorResizerPositionY: number;
   selectorResizerMouseDown: boolean;
@@ -18,6 +20,8 @@ interface IStateManager {
 const STATE_MANAGER: IStateManager = {
   selectorPositionX: INITIAL_SELECTOR_X,
   selectorPositionY: INITIAL_SELECTOR_Y,
+  selectorHovered: false,
+  selectorOpened: false,
   selectorMouseDown: false,
   selectorResizerPositionX: INITIAL_SELECTOR_RESIZER_X,
   selectorResizerPositionY: INITIAL_SELECTOR_RESIZER_Y,
@@ -86,6 +90,8 @@ const logoutAndUpdateState = async () => {
     STATE_MANAGER.id_token = '';
     toggleSelectorResizerElement();
     toggleSelectionBoxElement();
+    STATE_MANAGER.selectorOpened = !STATE_MANAGER.selectorOpened;
+    selectorTooltipElement.innerHTML = `Double Click To ${STATE_MANAGER.selectorOpened ? 'Close' : 'Open'}`;
     toggleShowQueryInput();
     toggleShowLogoutButton();
     hideQueryResponse();
@@ -153,6 +159,16 @@ selectorResizerElement.addEventListener('mousedown', (event) => {
   STATE_MANAGER.selectorResizerMouseDown = true;
 });
 
+selectorElement.addEventListener('mouseenter', () => {
+  STATE_MANAGER.selectorHovered = true;
+  showSelectorTooltip(STATE_MANAGER.selectorOpened);
+});
+
+selectorElement.addEventListener('mouseleave', () => {
+  STATE_MANAGER.selectorHovered = false;
+  hideSelectorTooltip();
+});
+
 selectorElement.addEventListener('dblclick', async (event) => {
   if (!STATE_MANAGER.initialLoginAttemptCompleted) {
     showQueryResponseWithMessage('Attempting to authenticate, please wait', true);
@@ -169,6 +185,8 @@ selectorElement.addEventListener('dblclick', async (event) => {
     return redirectToStripeCheckout();
   }
 
+  STATE_MANAGER.selectorOpened = !STATE_MANAGER.selectorOpened;
+  selectorTooltipElement.innerHTML = `Double Click To ${STATE_MANAGER.selectorOpened ? 'Close' : 'Open'}`;
   toggleSelectorResizerElement();
   toggleSelectionBoxElement();
   toggleShowQueryInput();

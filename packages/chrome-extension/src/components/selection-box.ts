@@ -11,7 +11,7 @@ const selectionBoxElement = createElement(
     "border-radius": "8px",
     "border": "2px solid #407BFF",
     "background-color": "rgba(64,123,255,0.1)",
-    "z-index": "9999999999999999",
+    "z-index": "9999999999999999999",
   },
   'chatgpt-that-selection-box-element',
   [],

@@ -11,7 +11,7 @@ const selectorResizerElement = createElement(
     "border-radius": "16px",
     "border": "2px solid #407BFF",
     "background-color": "white",
-    "z-index": "999999999999999999",
+    "z-index": "99999999999999999999999",
     "cursor": "pointer",
   },
   'chatgpt-that-selector-resizer-element',
