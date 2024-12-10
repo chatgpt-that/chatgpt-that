@@ -88,7 +88,7 @@ export function SplashPage() {
       <div className='border-2 rounded-xl overflow-hidden'>
         <iframe className='' width="1024" height="576"  src="https://www.youtube.com/embed/rVaobBdD0lw?si=TJDsQ0ASuN0pwl6g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
       </div>
-      <Pricing priceItems={[{ name: '100 Tokens', price: '$4.99' }]}/>
+      <Pricing priceItems={[{ name: '100 Credits', price: '$4.99' }]}/>
       <FAQ faqs={faqs}/>
       <div className='w-full flex gap-1 font-[Gilroy] text text-gray-400'>
         <span>Email us</span>
