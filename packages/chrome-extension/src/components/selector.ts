@@ -1,4 +1,30 @@
 
+const selectorTooltipElement = createElement(
+  'div',
+  {
+    "position": "absolute",
+    "top": "1px",
+    "left": "50px",
+    "border-radius": "8px",
+    "height": "40px",
+    "background": "transparent",
+    "color": "#000000",
+    "font-size": "12px",
+    "font": "Gilroy",
+    "display": "flex",
+    "overflow": "hidden",
+    "white-space": "nowrap",
+    "width": "0",
+    "transition": "all 250ms",
+    "align-items": "center",
+    "border": "2px solid transparent"
+  },
+  'chatgpt-that-selector-tooltip-element',
+  [],
+  '',
+  false
+);
+
 const selectorElement = createElement(
   'div',
   {
@@ -13,7 +39,7 @@ const selectorElement = createElement(
     "border-radius": "42px",
     "border": "2px solid #407BFF",
     "background-color": "white",
-    "z-index": "99999999999999999",
+    "z-index": "999999999999999999999",
     "cursor": "wait",
   },
   'chatgpt-that-selector-element',
@@ -30,7 +56,25 @@ const selectorElement = createElement(
   true
 );
 
+selectorElement.appendChild(selectorTooltipElement);
+
 const updateSelectorElementPosition = (x: number, y: number) => {
   selectorElement.style.left = `${x}px`;
   selectorElement.style.top = `${y}px`;
+};
+
+const hideSelectorTooltip = () => {
+  selectorTooltipElement.style.width = '0';
+  selectorTooltipElement.style.padding = '0';
+  selectorTooltipElement.style.background = "transparent";
+  selectorTooltipElement.innerHTML = '';
+  selectorTooltipElement.style.borderColor = "transparent";
+};
+
+const showSelectorTooltip = (isOpen: boolean) => {
+  selectorTooltipElement.style.width = '124px';
+  selectorTooltipElement.style.padding = '0 8px';
+  selectorTooltipElement.style.border = '2px solid #407BFF';
+  selectorTooltipElement.style.background = "white";
+  selectorTooltipElement.innerHTML = `Double Click To ${isOpen ? 'Close' : 'Open'}`;
 };

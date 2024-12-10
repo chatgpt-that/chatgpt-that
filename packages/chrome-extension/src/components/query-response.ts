@@ -1,4 +1,18 @@
 
+const queryResponseTextElement = createElement(
+  'div',
+  {
+    "color": "#FFF",
+    "max-height": "350px",
+    "overflow-y": "scroll",
+    "padding-right": "12px",
+  },
+  'chatgpt-that-query-response-text-element',
+  [],
+  '',
+  true
+);
+
 const queryResponseElement = createElement(
   'div',
   {
@@ -7,7 +21,7 @@ const queryResponseElement = createElement(
     "left": `${window.innerWidth / 2 + 225}px`,
     "width": "450px",
     "border-radius": "8px",
-    "padding": "16px 48px 16px 32px",
+    "padding": "16px 36px 16px 32px",
     "border": "none",
     "color": "#FFF",
     "opacity": "0",
@@ -21,6 +35,8 @@ const queryResponseElement = createElement(
   '',
   true
 );
+
+queryResponseElement.appendChild(queryResponseTextElement);
 
 const queryResponseCopyIconElement = createElement(
   'div',
@@ -65,7 +81,7 @@ const hideQueryResponse = () => {
   queryResponseElement.style.opacity = '0';
   queryResponseElement.style.bottom = '250px';
   setTimeout(() => {
-    queryResponseElement.innerText = '';
+    queryResponseTextElement.innerText = '';
     queryResponseElement.appendChild(queryResponseCopyIconElement);
     queryResponseElement.style.bottom = '72px';
     queryResponseElement.style.left = `${window.innerWidth / 2 + 225}px`;
@@ -73,7 +89,7 @@ const hideQueryResponse = () => {
 };
 
 const showQueryResponseWithMessage = (message: string, isErrorMessage?: boolean, onGetMoreCredits?: () => void) => {
-  queryResponseElement.innerText = message;
+  queryResponseTextElement.innerText = message;
   queryResponseElement.style.opacity = '1';
   if (!isErrorMessage) queryResponseElement.appendChild(queryResponseCopyIconElement);
   queryResponseElement.style.left = `${window.innerWidth / 2 - 225}px`;
