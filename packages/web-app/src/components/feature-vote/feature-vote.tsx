@@ -24,7 +24,7 @@ export function FeatureVote({
         <span className='font-[Gilroy] font-bold text-xl text-[#000000d9]'>VOTE</span>
         <span className='font-[Gilroy] font-[500] text-lg text-gray-400'>on an upcoming feature!</span>
       </div>
-      <div className='w-full flex justify-between'>
+      <div className='w-full flex flex-col gap-2 lg:gap-0 lg:flex-row items-center lg:justify-between'>
         { features.map((featureItem) => (
           <div 
             key={featureItem.featureId} 

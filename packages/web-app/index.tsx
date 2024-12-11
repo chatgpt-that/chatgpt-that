@@ -12,7 +12,7 @@ const root = createRoot(container);
 
 const SplashLayout = ({ children }: { children: JSX.Element }) => {
   return (
-    <div className='w-[1024px] h-full justify-self-center'>{children}</div>
+    <div className='w-screen px-4 md:px-0 md:w-[1024px] h-full justify-self-center'>{children}</div>
   );
 };
 
