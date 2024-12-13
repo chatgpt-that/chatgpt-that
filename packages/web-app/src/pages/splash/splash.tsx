@@ -77,7 +77,7 @@ export function SplashPage() {
       />
       <div className='flex flex-col gap-4 mt-2 items-center'>
         <div className='font-[Gilroy] font-[900] text-5xl text-[#000000d9]'>CHATGPT THAT</div>
-        <div className='font-[Gilroy] font-[400] text-center text-xl text-gray-500'>Imagine If ChatGPT can see what you see. Now it can.</div>
+        <div className='font-[Gilroy] font-[400] text-center text-xl text-gray-700'>Imagine If ChatGPT can see what you see. Now it can.</div>
         <div className='w-[208px] mt-2'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
       </div>
       <FeatureVote 

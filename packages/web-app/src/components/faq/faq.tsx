@@ -49,7 +49,7 @@ export function FAQ({
               </div>
             </div>
             { faq.isOpened && (
-              <div className='mt-2 font-[Gilroy] font-[400] text text-gray-400 flex-wrap'>{faq.answer}</div>
+              <div className='mt-2 font-[Gilroy] font-[400] text text-gray-600 flex-wrap'>{faq.answer}</div>
             ) }
           </div>
         )) }
