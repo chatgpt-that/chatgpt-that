@@ -15,14 +15,14 @@ export class ConversationRepository {
   }
 
   async findOne(findOneDto: Readonly<FindOneDTO>) {
-    return await this.model.findOne({ user_id: findOneDto.userId });
+    return await this.model.findOne(findOneDto);
   }
 
   async createOne(createOneDto: Readonly<CreateOneDTO>) {
     const id = uuid();
     const conversation = new this.model({
       id,
-      user_id: createOneDto.userEmail,
+      user_email: createOneDto.userEmail,
       website_url: createOneDto.websiteUrl,
       conversation: createOneDto.initialConversation ?? [],
     });

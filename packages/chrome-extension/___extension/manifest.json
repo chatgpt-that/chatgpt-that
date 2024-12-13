@@ -26,17 +26,19 @@
         "build/utils/utils.js",
         "build/styles/styles.js",
 
+        "build/components/___svg.js",
         "build/components/selection-box.js",
         "build/components/selector.js",
         "build/components/selector-resizer.js",
         "build/components/query-input.js",
         "build/components/logout-button.js",
-        "build/components/query-response.js",
+        "build/components/conversation.js",
 
         "build/integrations/auth.api.js",
         "build/integrations/user.api.js",
         "build/integrations/payment.api.js",
         "build/integrations/chat.api.js",
+        "build/integrations/conversation.api.js",
 
         "build/content-script/content-script.js"
       ]

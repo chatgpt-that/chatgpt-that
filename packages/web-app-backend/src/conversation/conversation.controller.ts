@@ -34,7 +34,7 @@ export class ConversationController {
       if (!websiteUrl) return res.status(400).send('Missing websiteUrl field');
       if (!email) return res.status(401).send('Missing email from auth id_token');
       const conversation = await this.conversationService.getConversation({ userEmail: email, websiteUrl });
-      return res.status(200).send(conversation);
+      return res.status(200).send(conversation?.conversation ?? []);
 
     } catch (err) {
       console.error(`[Server]: getConversation error - ${err}`);
@@ -46,14 +46,15 @@ export class ConversationController {
     try {
       const { email } = (req as any).auth;
       if (!email) return res.status(401).send('Missing email from auth id_token');
-      const { conversationId } = req.body;
+      const { websiteUrl } = req.body;
+      console.log({websiteUrl});
       const conversation = await this.conversationService.conversationRepository.model.findOne({
-        id: conversationId, 
+        website_url: websiteUrl, 
         user_email: email 
       });
       if (!conversation) return res.status(404).send('Conversation does not exist or user cannot delete conversation');
-      await this.conversationService.deleteConversation({ id: conversationId });
-      return res.status(200).send(null);
+      await this.conversationService.deleteConversation({ id: conversation.id });
+      return res.end();
 
     } catch (err) {
       console.error(`[Server]: deleteConversation error - ${err}`);

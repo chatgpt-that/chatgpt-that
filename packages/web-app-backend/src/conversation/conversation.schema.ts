@@ -21,8 +21,8 @@ const conversationMessageSchema = new mongoose.Schema<IConversationMessage>({
 
 const schema = new mongoose.Schema<IConversation>({
   id: { type: String, unique: true, required: true, index: true },
-  user_email: { type: String, unique: true, required: true, index: true },
-  website_url: { type: String, unique: true, required: true, index: true },
+  user_email: { type: String, required: true, index: true },
+  website_url: { type: String, required: true, index: true },
   conversation: { type: [conversationMessageSchema], default: [] },
 });
 

@@ -1,18 +1,18 @@
 
-export interface IConversationMessage {
+interface IConversationMessage {
   identity: 'user' | 'assistant';
   message: string;
   snippet?: string;
 }
 
-export interface IConversation {
+interface IConversation {
   id: string;
   user_email: string;
   website_url: string;
   conversation: IConversationMessage[];
 }
 
-const getConversation = (id_token: string): Promise<IConversation[]> => {
+const getConversation = (id_token: string): Promise<IConversationMessage[]> => {
   return new Promise((resolve, reject) => {
     fetch(
       `${BACKEND_HOST}/api/conversation/retrieve`,
@@ -36,7 +36,7 @@ const getConversation = (id_token: string): Promise<IConversation[]> => {
   });
 };
 
-const messageAssistant = (id_token: string, query: string, imageDataUrl?: string): Promise<IConversation[]> => {
+const messageAssistant = (id_token: string, query: string, imageDataUrl?: string): Promise<IConversationMessage[]> => {
   return new Promise((resolve, reject) => {
     fetch(
       `${BACKEND_HOST}/api/conversation/message`,
@@ -48,6 +48,7 @@ const messageAssistant = (id_token: string, query: string, imageDataUrl?: string
         },
         body: JSON.stringify({
           query,
+          imageDataUrl,
           websiteUrl: window.location.origin
         })
       }
@@ -61,7 +62,8 @@ const messageAssistant = (id_token: string, query: string, imageDataUrl?: string
   });
 };
 
-const deleteConversation = (id_token: string, conversationId: string): Promise<void> => {
+const deleteConversation = (id_token: string, websiteUrl: string): Promise<void> => {
+  console.log('ggs');
   return new Promise((resolve, reject) => {
     fetch(
       `${BACKEND_HOST}/api/conversation`,
@@ -72,14 +74,13 @@ const deleteConversation = (id_token: string, conversationId: string): Promise<v
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          conversationId,
+          websiteUrl: websiteUrl
         })
       }
     )
     .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) return reject(data);
-      return resolve(data);
+      if (!response.ok) return reject('');
+      return resolve(undefined);
     })
     .catch(reject);
   });

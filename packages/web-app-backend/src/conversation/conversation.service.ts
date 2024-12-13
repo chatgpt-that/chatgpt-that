@@ -24,7 +24,7 @@ export class ConversationService {
 
   async getConversation(getConversationDto: Readonly<GetConversationDTO>) {
     return await this.conversationRepository.findOne({ 
-      user_id: getConversationDto.userEmail,
+      user_email: getConversationDto.userEmail,
       website_url: getConversationDto.websiteUrl,
     });
   }
