@@ -17,7 +17,7 @@ export function Pricing({
     <div className='w-full'>
       <div className='pb-2 border-b-2'>
         <div className='font-[Gilroy] font-bold text-xl text-[#000000d9]'>PRICING</div>
-        <div className='font-[Gilroy] text-gray-400 text-sm mb-2'>{`
+        <div className='font-[Gilroy] text-gray-600 text-sm mb-2'>{`
           Please be advised these prices are experimental and will most likely change.
         `}</div>
       </div>

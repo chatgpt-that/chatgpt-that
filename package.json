@@ -1,7 +1,7 @@
 {
   "name": "chatgpt-that",
   "type": "module",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "index.js",
   "scripts": {
     "copy-chrome-extension-node-modules": "cp -r packages/chrome-extension/node_modules packages/chrome-extension/___extension/node_modules",
