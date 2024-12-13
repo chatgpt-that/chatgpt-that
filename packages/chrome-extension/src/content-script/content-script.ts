@@ -14,6 +14,8 @@ interface IStateManager {
   initialLoginAttemptCompleted: boolean;
   isQuerying: boolean;
   id_token: string;
+  sendImageDataUrl: boolean;
+  conversation: IConversationMessage[];
   user: IUser | null;
 }
 
@@ -23,10 +25,12 @@ const STATE_MANAGER: IStateManager = {
   selectorHovered: false,
   selectorOpened: false,
   selectorMouseDown: false,
+  sendImageDataUrl: true,
   selectorResizerPositionX: INITIAL_SELECTOR_RESIZER_X,
   selectorResizerPositionY: INITIAL_SELECTOR_RESIZER_Y,
   selectorResizerMouseDown: false,
   isQuerying: false,
+  conversation: [],
 
   // Authentication
   initialLoginAttemptCompleted: false,
@@ -35,6 +39,16 @@ const STATE_MANAGER: IStateManager = {
   // User
   user: null,
 
+};
+
+const fetchAndSetConversation = async (idToken: string) => {
+  try {
+    const conversation = await getConversation(idToken);
+    STATE_MANAGER.conversation = conversation ?? [];
+
+  } catch (err) {
+    if (IS_DEV_ENV) console.error(`[Dev]: Failed fetchAndSetConversation - ${err}`);
+  }
 };
 
 const checkIdTokenAndRemoveIfExpired = async () => {
@@ -60,12 +74,13 @@ const getIdTokenAndSetUserIfAvailable = async () => {
     const idToken = await getIdTokenFromStorage();
     if (!idToken) return IS_DEV_ENV ? console.log(`[Dev]: getIdTokenAndSetUserIfAvailable Failed - No IdToken in Chrome Storage`) : null;
     IS_DEV_ENV && console.log(`[Dev]: Retrieved id_token - ${idToken.length}`);
+    fetchAndSetConversation(idToken);
     STATE_MANAGER.id_token = idToken;
     const user = await getUser(STATE_MANAGER.id_token);
     STATE_MANAGER.user = user;
   } catch (err) {
     console.error(`[Client]: Failed to fetch user - ${err}`);
-    showQueryResponseWithMessage('Failed to fetch user, please refresh and try again.', true);
+    showConversationError('Failed to fetch user, please refresh and try again.');
   } finally {
     STATE_MANAGER.initialLoginAttemptCompleted = true;
     selectorElement.style.cursor = 'pointer';
@@ -79,7 +94,7 @@ const loginAndUpdateState = async () => {
     await getIdTokenAndSetUserIfAvailable();
   } catch (err) {
     console.error(`[Client]: Failed to login - ${err}`);
-    showQueryResponseWithMessage('Failed to login, please refresh and try again.', true);
+    showConversationError('Failed to login, please refresh and try again.');
   }
 };
 
@@ -88,24 +103,37 @@ const logoutAndUpdateState = async () => {
     await logout();
     STATE_MANAGER.user = null;
     STATE_MANAGER.id_token = '';
+    STATE_MANAGER.sendImageDataUrl = true;
     toggleSelectorResizerElement();
     toggleSelectionBoxElement();
     STATE_MANAGER.selectorOpened = !STATE_MANAGER.selectorOpened;
     selectorTooltipElement.innerHTML = `Double Click To ${STATE_MANAGER.selectorOpened ? 'Close' : 'Open'}`;
     toggleShowQueryInput();
     toggleShowLogoutButton();
-    hideQueryResponse();
+    hideConversation();
     await clearIdTokenOnStorage();
   } catch (err) {
     console.error(`[Client]: Failed to logout - ${err}`);
-    showQueryResponseWithMessage('Failed to logout, please refresh and try again.', true);
+    showConversationError('Failed to logout, please refresh and try again.');
+  }
+};
+
+const clearConversationAndUpdateState = async () => {
+  try {
+    await deleteConversation(STATE_MANAGER.id_token, window.location.origin);
+    STATE_MANAGER.sendImageDataUrl = true;
+    STATE_MANAGER.conversation = [];
+    hideConversation();
+  } catch (err) {
+    console.error(`[Client]: Failed to clear conversation - ${err}`);
+    showConversationError('Failed to clear conversation, please refresh and try again.');
   }
 };
 
 const redirectToStripeCheckout = () => {
   createStripeCheckoutUrl(STATE_MANAGER.id_token)
   .then((stripeCheckoutUrl) => window.location.href = stripeCheckoutUrl)
-  .catch(() => showQueryResponseWithMessage('Error creating stripe payment url', true));
+  .catch(() => showConversationError('Error creating stripe payment url'));
 };
 
 // Initial login attempt
@@ -124,6 +152,7 @@ window.addEventListener('mouseup', () => {
 
 window.addEventListener('mousemove', (event) => {
   if (!STATE_MANAGER.selectorMouseDown && !STATE_MANAGER.selectorResizerMouseDown) return;
+  STATE_MANAGER.sendImageDataUrl = true;
   if (STATE_MANAGER.selectorMouseDown) {
     const selectorDeltaX = STATE_MANAGER.selectorResizerPositionX - STATE_MANAGER.selectorPositionX;
     const selectorDeltaY = STATE_MANAGER.selectorResizerPositionY - STATE_MANAGER.selectorPositionY;
@@ -171,14 +200,14 @@ selectorElement.addEventListener('mouseleave', () => {
 
 selectorElement.addEventListener('dblclick', async (event) => {
   if (!STATE_MANAGER.initialLoginAttemptCompleted) {
-    showQueryResponseWithMessage('Attempting to authenticate, please wait', true);
+    showConversationError('Attempting to authenticate, please wait');
     return;
   }
  
   if (!STATE_MANAGER.id_token) await loginAndUpdateState();
 
   if (!STATE_MANAGER.user) {
-    return showQueryResponseWithMessage('Failed to retrieve user, please refresh and try again', true);
+    return showConversationError('Failed to retrieve user, please refresh and try again');
   }
 
   if (STATE_MANAGER.user.credits <= 0) {
@@ -191,7 +220,7 @@ selectorElement.addEventListener('dblclick', async (event) => {
   toggleSelectionBoxElement();
   toggleShowQueryInput();
   toggleShowLogoutButton();
-  hideQueryResponse();
+  STATE_MANAGER.selectorOpened && STATE_MANAGER.conversation.length > 0 ? showConversation(STATE_MANAGER.conversation) : hideConversation();
 });
 
 // QUERY INPUT
@@ -206,36 +235,39 @@ queryInputElement.addEventListener('keyup', async (event) => {
   try {
 
     if (STATE_MANAGER.user && STATE_MANAGER.user.credits <= 0) {
-      try { getMoreCreditsElement.removeEventListener('click', redirectToStripeCheckout) } catch{}
-      return showQueryResponseWithMessage('Out of credits! ', true, redirectToStripeCheckout);
+      return showConversationError('Out of credits, double click the ChatGPT-That icon twice.');
     }
 
     const queryText = (event.target as HTMLInputElement).value;
     setQueryInputIsLoading();
     STATE_MANAGER.isQuerying = true;
-    const rectangle = calculateRectangle(
-      STATE_MANAGER.selectorPositionX, 
-      STATE_MANAGER.selectorResizerPositionX ,
-      STATE_MANAGER.selectorPositionY, 
-      STATE_MANAGER.selectorResizerPositionY, 
-    );
-    const imageDataUrl = await createImageDataUrlFromViewport(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    const queryResponse = await queryImage(STATE_MANAGER.id_token, imageDataUrl, queryText);
-    showQueryResponseWithMessage(queryResponse);
+    
+    let imageDataUrl = undefined;
+    if (STATE_MANAGER.sendImageDataUrl) {
+      const rectangle = calculateRectangle(
+        STATE_MANAGER.selectorPositionX, 
+        STATE_MANAGER.selectorResizerPositionX ,
+        STATE_MANAGER.selectorPositionY, 
+        STATE_MANAGER.selectorResizerPositionY, 
+      );
+      imageDataUrl = await createImageDataUrlFromViewport(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+    STATE_MANAGER.sendImageDataUrl = false;
+    const conversation = await messageAssistant(STATE_MANAGER.id_token, queryText, imageDataUrl);
+    STATE_MANAGER.conversation = conversation;
+    showConversation(conversation);
+
     if (STATE_MANAGER.user?.credits) STATE_MANAGER.user.credits -= 1;
   } catch (err) {
-    showQueryResponseWithMessage(err as string, true);
+    showConversationError(err as string);
   } finally {
     setQueryInputLoadingCompleted();
     STATE_MANAGER.isQuerying = false;
   }
 });
 
-// QUERY RESPONSE COPY ICON
-queryResponseCopyIconElement.addEventListener('click', async () => {
-  const clipboardText = queryResponseElement.innerText;
-  await window.navigator.clipboard.writeText(clipboardText);
-});
-
 // LOGOUT BUTTON
 logoutButtonElement.addEventListener('click', logoutAndUpdateState);
+
+// CLEAR BUTTON
+clearConversationElement.addEventListener('click', clearConversationAndUpdateState);

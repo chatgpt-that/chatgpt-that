@@ -9,6 +9,7 @@ import { FeedbackController } from './src/feedback/feedback.controller.js';
 import { UserController } from './src/user/user.controller.js';
 import { PaymentController } from './src/payment/payment.controller.js';
 import { ChatController } from './src/chat/chat.controller.js';
+import { ConversationController } from './src/conversation/conversation.controller.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ new FeedbackController(app);
 new UserController(app);
 new PaymentController(app);
 new ChatController(app);
+new ConversationController(app);
 
 app.get('/api', (req, res) => {
   res.send('[Server]: This endpoint is working as intended.');

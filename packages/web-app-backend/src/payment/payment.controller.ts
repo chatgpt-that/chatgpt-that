@@ -42,7 +42,7 @@ export class PaymentController {
   async completeCheckoutSession(req: Request, res: Response) {
     try {
       const userEmail = decodeURIComponent((req.query?.user_email as string | undefined)?? '');
-      if (!userEmail) return res.status(400).send('Missing user_id in the url query');
+      if (!userEmail) return res.status(400).send('Missing user_email in the url query');
       const redirectUrl = await this.paymentService.completeCheckoutSession({ userEmail });
       return res.redirect(redirectUrl);
     } catch (err) {
@@ -54,7 +54,7 @@ export class PaymentController {
   async cancelCheckoutSession(req: Request, res: Response) {
     try {
       const userEmail = decodeURIComponent((req.query?.user_email as string | undefined)?? '');
-      if (!userEmail) return res.status(400).send('Missing user_id in the url query');
+      if (!userEmail) return res.status(400).send('Missing user_email in the url query');
       const redirectUrl = await this.paymentService.cancelCheckoutSession({ userEmail });
       return res.redirect(redirectUrl);
     } catch (err) {
