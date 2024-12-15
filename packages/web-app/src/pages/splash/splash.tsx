@@ -78,7 +78,7 @@ export function SplashPage() {
       <div className='flex flex-col gap-4 mt-2 items-center'>
         <div className='font-[Gilroy] font-[900] text-5xl text-[#000000d9]'>CHATGPT THAT</div>
         <div className='font-[Gilroy] font-[400] text-center text-xl text-gray-700'>Imagine If ChatGPT can see what you see. Now it can.</div>
-        <div className='w-[208px] mt-2'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
+        <div className='w-[270px] mt-2'><AddToChromeButton chromeExtensionUrl='https://chromewebstore.google.com/detail/chatgpt-that/blcgpfjbeleilmpmhlcmmeokfmpbmlch'/></div>
       </div>
       <FeatureVote 
         features={featureVoteItems}
@@ -88,7 +88,6 @@ export function SplashPage() {
       <div className='border-2 rounded-xl overflow-hidden'>
         <iframe className='' width={window.innerWidth > 1024 ? '1024' : '320'} height={window.innerWidth > 1024 ? '576' : '180'}  src="https://www.youtube.com/embed/rVaobBdD0lw?si=TJDsQ0ASuN0pwl6g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
       </div>
-      <Pricing priceItems={[{ name: '100 Tokens', price: '$4.99' }]}/>
       <FAQ faqs={faqs}/>
       <div className='w-full font-[Gilroy] text-gray-400'>
         <span>Email us</span>
