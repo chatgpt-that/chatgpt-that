@@ -12,7 +12,7 @@ export class UserRepository {
     this.findOne=this.findOne.bind(this);
     this.createOne=this.createOne.bind(this);
     this.userModel = userModel;
-    this.initialCredits = 100;
+    this.initialCredits = 9999;
   }
 
   async findOne(findUserDto: FindUserDTO) {

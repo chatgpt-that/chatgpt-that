@@ -6,24 +6,28 @@ export const splashNavTitle = 'CHATGPT THAT';
 export const featureVoteItems: FeatureItem[] = [
   {
     featureId: 0,
-    title: 'MULTIPLE SNIPS ON PAGE',
-    description: `Take multiple snips of a single webpage. 
-    All the snips (selected parts of the webpage) will be 
-    sent as content for the query.`
+    title: 'MULTIPLE SNIPS ON WEBSITE',
+    description: `Allow users to take multiple snips of   
+    a website in one query. All created snips (the        
+    selected parts of the screen) will be sent as context 
+    for the query.`
   },
   {
     featureId: 1,
-    title: 'CROSS-SITE SNIPPING',
-    description: `Take a snip from many website websites and 
-    send all the snips combined as context for the query.`
+    title: 'REMOVE SNIPS',
+    description: `Users will no longer need to select    
+    part of the screen. Instead, the chat will have full 
+    context of what website the user is on and the       
+    contents of that site.`
   },
   {
     featureId: 2,
-    title: 'SAVE CHAT HISTORY & SNIPPETS',
-    description: `Save snippets, allowing you to bookmark the   
-    pages and save chat history. This makes it into a real chat 
-    like ChatGPT.`
-  }
+    title: 'WEBSITE INTERACTION',
+    description: `Allow the chat the ability to modify   
+    contents of a website. An example would be to        
+    permanently show a summary of an article until the   
+    user reverts it.`
+  },
 ];
 
 export const faqs: FAQ[] = [
@@ -40,34 +44,20 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'What is ChatGPT That',
-    answer: `ChatGPT That is a Google Chrome extension that
-    allows users of Google Chrome to select any part of    
-    their screen as context for ChatGPT. Much like humans, 
-    it can be tough for ChatGPT to understand what someone 
-    is asking without having context. ChatGPT That solves  
-    this issue by showing ChatGPT exactly what the user    
-    is seeing so it can return better results.`
+    answer: `ChatGPT That is a Google Chrome extension to  
+    streamline the way we use AI in the browser. Much like 
+    humans, it can be tough for AI to understand what      
+    someone is asking without the full context. ChatGPT    
+    That allows users to select snips of the website they  
+    are on as context, followed by a query for the AI. Have
+    a smart AI assistant on every website you visit.`
   },
   {
     question: 'Is ChatGPT That free',
-    answer: `The short answer is No. Unfortunately ChatGPT 
-    charges developers to use their Api, along with this   
-    ChatGPT That has a ton of planned features that will   
-    require developer resources. That being said, ChatGPT  
-    That will regularly give free credits and aim to bring 
-    the cost down to a minimum.`
-  },
-  {
-    question: 'How can I get ChatGPT That credits',
-    answer: `It's very simple, just ask! Send a message to  
-    the email at the bottom of the page and we will happily 
-    fund the account with a some credits. Keep in mind,     
-    there might be certain limitations due to the demand of 
-    these requests.`
+    answer: 'YES. ChatGPT That is officially FREE.'
   },
   {
     question: 'Do I need an OpenAI account',
-    answer: `Nope, ChatGPT That uses OpenAI Api so there is
-    no additional setup required for users.`
+    answer: 'Nope, the developers of ChatGPT That has you covered!'
   },
 ];

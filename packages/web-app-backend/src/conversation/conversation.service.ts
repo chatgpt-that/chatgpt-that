@@ -4,10 +4,10 @@ import { ConversationRepository } from './conversation.repository.js';
 import { AddToConversationDTO, DeleteConversationDTO, GetConversationDTO } from './conversation.dto.js';
 import { S3BucketService } from '../../___integration/s3bucket/s3bucket.service.js';
 import { IConversationMessage } from './conversation.schema.js';
-import { OpenAiService } from '../../___integration/openai/openai.service.js';
+import { LlamaService } from '../../___integration/llama/llama.service.js';
 
 export class ConversationService {
-  openaiService: OpenAiService;
+  llamaService: LlamaService;
   userService: UserService;
   s3BucketService: S3BucketService;
   conversationRepository: ConversationRepository;
@@ -17,7 +17,7 @@ export class ConversationService {
     this.addToConversation=this.addToConversation.bind(this);
     this.deleteConversation=this.deleteConversation.bind(this);
     this.userService = new UserService();
-    this.openaiService = new OpenAiService();
+    this.llamaService = new LlamaService();
     this.conversationRepository = new ConversationRepository();
     this.s3BucketService = new S3BucketService('sase-chrome-extension-001');
   }
@@ -53,8 +53,8 @@ export class ConversationService {
 
     const updatedConversationWithUserMessage = 
       existingConversation ? [...existingConversation.conversation, userMessage] : [userMessage];
-    const openaiResponseText = await this.openaiService.continueConversation(updatedConversationWithUserMessage);
-    updatedConversationWithUserMessage.push({ identity: 'assistant', message: openaiResponseText });
+    const llamaResponseText = await this.llamaService.continueConversation({ conversation: updatedConversationWithUserMessage});
+    updatedConversationWithUserMessage.push({ identity: 'assistant', message: llamaResponseText });
 
     if (existingConversation) {
       await this.conversationRepository.updateOneById({

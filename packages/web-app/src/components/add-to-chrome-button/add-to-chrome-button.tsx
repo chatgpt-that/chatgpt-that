@@ -20,7 +20,7 @@ export function AddToChromeButton({
         `}
       >
         <span className='w-[24px] h-[24px] !bg-center !bg-cover !bg-no-repeat' style={{background: `url(/assets/icons/google-chrome-icon.svg)`}} />
-        <span className='font-[Gilroy] font-bold'>Add to Chrome</span>
+        <span className='font-[Gilroy] font-bold'>Add to Chrome - It's Free</span>
       </button>
     </a>
   );
